@@ -1,0 +1,10 @@
+G:\WORkSPACE\KPLX\DrawingToolkit\DrawingToolkit\obj\Debug\DrawingToolkit.MainWindow.resources
+G:\WORkSPACE\KPLX\DrawingToolkit\DrawingToolkit\obj\Debug\DrawingToolkit.Properties.Resources.resources
+G:\WORkSPACE\KPLX\DrawingToolkit\DrawingToolkit\obj\Debug\DrawingToolkit.csproj.GenerateResource.cache
+G:\WORkSPACE\KPLX\DrawingToolkit\DrawingToolkit\obj\Debug\DrawingToolkit.csproj.CoreCompileInputs.cache
+G:\WORkSPACE\KPLX\DrawingToolkit\DrawingToolkit\bin\Debug\DrawingToolkit.exe.config
+G:\WORkSPACE\KPLX\DrawingToolkit\DrawingToolkit\bin\Debug\DrawingToolkit.exe
+G:\WORkSPACE\KPLX\DrawingToolkit\DrawingToolkit\bin\Debug\DrawingToolkit.pdb
+G:\WORkSPACE\KPLX\DrawingToolkit\DrawingToolkit\obj\Debug\DrawingToolkit.exe
+G:\WORkSPACE\KPLX\DrawingToolkit\DrawingToolkit\obj\Debug\DrawingToolkit.pdb
+G:\WORkSPACE\KPLX\DrawingToolkit\DrawingToolkit\obj\Debug\DrawingToolkit.csprojAssemblyReference.cache
