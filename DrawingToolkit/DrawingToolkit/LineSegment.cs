@@ -15,10 +15,10 @@ namespace DrawingToolkit
 
         public LineSegment()
         {
-            this.pen = new Pen(Color.Black);
-            pen.Width = 2.0f;
-            pen.Color = Color.Black;
-            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
+            this.pen = new Pen(Color.Black, 2.0f)
+            {
+                DashStyle = System.Drawing.Drawing2D.DashStyle.Solid
+            };
         }
 
         public LineSegment(Point startpoint) : this()

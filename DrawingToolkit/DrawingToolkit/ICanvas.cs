@@ -15,5 +15,8 @@ namespace DrawingToolkit
 
         void AddDrawingObject(DrawingObject drawingObject);
         void RemoveDrawingObject(DrawingObject drawingObject);
+        DrawingObject GetDrawingObject(Point e);
+
+        void Repaint();
     }
 }

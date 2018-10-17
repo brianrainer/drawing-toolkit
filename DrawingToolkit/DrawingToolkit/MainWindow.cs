@@ -13,7 +13,7 @@ namespace DrawingToolkit
     public partial class MainWindow : Form
     {
         private ICanvas canvas;
-        private IToolbar toolbar;
+        private IToolbox toolbox;
 
         public MainWindow()
         {
@@ -28,16 +28,23 @@ namespace DrawingToolkit
             this.toolStripContainer1.ContentPanel.Controls.Add((Control)this.canvas);
             #endregion
 
-            #region toolbar
-            this.toolbar = new DefaultToolbar();
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add((Control)this.toolbar);
-
-            ExampleToolbarItem toolItem1 = new ExampleToolbarItem();
-            ExampleToolbarItem toolItem2 = new ExampleToolbarItem();
-            this.toolbar.AddToolbarItem(toolItem1);
-            this.toolbar.AddSeparator();
-            this.toolbar.AddToolbarItem(toolItem2);
+            #region toolbox
+            this.toolbox = new DefaultToolbox();
+            this.toolStripContainer1.LeftToolStripPanel.Controls.Add((Control)this.toolbox);
+            this.toolbox.AddTool(new LineTool());
+            this.toolbox.AddSeparator();
+            this.toolbox.AddTool(new RectangleTool());
+            this.toolbox.ToolSelected += toolBox_ToolSelected;
             #endregion
+        }
+
+        private void toolBox_ToolSelected(ITool tool)
+        {
+            if (this.canvas != null)
+            {
+                this.canvas.SetActiveTool(tool);
+                tool.TargetCanvas = this.canvas;
+            }
         }
     }
 }

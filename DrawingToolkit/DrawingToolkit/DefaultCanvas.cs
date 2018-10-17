@@ -15,9 +15,52 @@ namespace DrawingToolkit
 
         public DefaultCanvas()
         {
+            this.drawingObjectList = new List<DrawingObject>();
+
             this.DoubleBuffered = true;
             this.BackColor = System.Drawing.Color.White;
             this.Dock = DockStyle.Fill;
+
+            this.Paint += DefaultCanvas_Paint;
+            this.MouseUp += DefaultCanvas_MouseUp;
+            this.MouseDown += DefaultCanvas_MouseDown;
+            this.MouseMove += DefaultCanvas_MouseMove;
+        }
+
+        private void DefaultCanvas_Paint(object sender, PaintEventArgs e)
+        {
+            foreach(DrawingObject drawingObject in drawingObjectList)
+            {
+                drawingObject.SetGraphics(e.Graphics);
+                drawingObject.Draw();
+            }
+        }
+
+        private void DefaultCanvas_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (this.currentActiveTool != null)
+            {
+                this.currentActiveTool.ToolMouseUp(sender, e);
+                this.Repaint();
+            }
+        }
+
+        private void DefaultCanvas_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (this.currentActiveTool != null)
+            {
+                this.currentActiveTool.ToolMouseDown(sender, e);
+                this.Repaint();
+            }
+        }
+
+        private void DefaultCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (this.currentActiveTool != null)
+            {
+                this.currentActiveTool.ToolMouseMove(sender, e);
+                this.Repaint();
+            }
         }
 
         public ITool GetActiveTool()
@@ -33,11 +76,24 @@ namespace DrawingToolkit
         public void AddDrawingObject(DrawingObject drawingObject)
         {
             this.drawingObjectList.Add(drawingObject);
+            this.Repaint();
         }
 
         public void RemoveDrawingObject(DrawingObject drawingObject)
         {
             this.drawingObjectList.Remove(drawingObject);
+            this.Repaint();
+        }
+
+        public DrawingObject GetDrawingObject(Point e)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Repaint()
+        {
+            this.Invalidate();
+            this.Update();
         }
     }
 }

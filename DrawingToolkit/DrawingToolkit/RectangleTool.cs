@@ -7,17 +7,17 @@ using System.Windows.Forms;
 
 namespace DrawingToolkit
 {
-    public class LineTool : ToolStripButton, ITool
+    public class RectangleTool : ToolStripButton, ITool
     {
         private ICanvas canvas;
-        private LineSegment lineSegment;
+        private Rectangle rectangle;
 
-        public LineTool()
+        public RectangleTool()
         {
-            this.Name = "Line Tool";
-            this.ToolTipText = "Line Tool";
+            this.Name = "Rectangle Tool";
+            this.ToolTipText = "Rectangle Tool";
+            this.Text = "Rectangle";
             this.CheckOnClick = true;
-            this.Text = "Line";
         }
 
         public Cursor cursor => Cursors.Arrow;
@@ -38,10 +38,7 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                lineSegment = new LineSegment(new System.Drawing.Point(e.X, e.Y))
-                {
-                    EndPoint = new System.Drawing.Point(e.X, e.Y)
-                };
+                rectangle = new Rectangle(new System.Drawing.Point(e.X, e.Y));
             }
         }
 
@@ -49,8 +46,8 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                lineSegment.EndPoint = new System.Drawing.Point(e.X, e.Y);
-                GetCanvas().AddDrawingObject(lineSegment);
+                rectangle.EndPoint = new System.Drawing.Point(e.X, e.Y);
+                GetCanvas().AddDrawingObject(rectangle);
             }
         }
 
@@ -58,11 +55,9 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                lineSegment.EndPoint = new System.Drawing.Point(e.X, e.Y);
-                GetCanvas().AddDrawingObject(lineSegment);
+                rectangle.EndPoint = new System.Drawing.Point(e.X, e.Y);
+                GetCanvas().AddDrawingObject(rectangle);
             }
         }
-
-
     }
 }
