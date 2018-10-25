@@ -56,6 +56,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DrawingObject.cs" />
+    <Compile Include="DrawingState.cs" />
+    <Compile Include="EditState.cs" />
     <Compile Include="ExampleToolbarItem.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -75,12 +77,17 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="PreviewState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="RectangleTool.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SelectionTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="StaticState.cs" />
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>

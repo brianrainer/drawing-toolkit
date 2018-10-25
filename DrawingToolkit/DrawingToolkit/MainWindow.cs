@@ -34,6 +34,8 @@ namespace DrawingToolkit
             this.toolbox.AddTool(new LineTool());
             this.toolbox.AddSeparator();
             this.toolbox.AddTool(new RectangleTool());
+            this.toolbox.AddSeparator();
+            this.toolbox.AddTool(new SelectionTool());
             this.toolbox.ToolSelected += toolBox_ToolSelected;
             #endregion
         }

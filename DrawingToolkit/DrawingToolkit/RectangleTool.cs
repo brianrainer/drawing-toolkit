@@ -59,5 +59,9 @@ namespace DrawingToolkit
                 GetCanvas().AddDrawingObject(rectangle);
             }
         }
+
+        public void ToolMouseDoubleClick(object sender, MouseEventArgs e)
+        {
+        }
     }
 }

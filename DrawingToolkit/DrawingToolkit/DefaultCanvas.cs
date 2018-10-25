@@ -11,11 +11,11 @@ namespace DrawingToolkit
     public class DefaultCanvas : Control, ICanvas
     {
         private ITool currentActiveTool;
-        private List<DrawingObject> drawingObjectList;
+        private List<DrawingObject> DrawingObjectList;
 
         public DefaultCanvas()
         {
-            this.drawingObjectList = new List<DrawingObject>();
+            this.DrawingObjectList = new List<DrawingObject>();
 
             this.DoubleBuffered = true;
             this.BackColor = System.Drawing.Color.White;
@@ -25,11 +25,12 @@ namespace DrawingToolkit
             this.MouseUp += DefaultCanvas_MouseUp;
             this.MouseDown += DefaultCanvas_MouseDown;
             this.MouseMove += DefaultCanvas_MouseMove;
+            this.MouseDoubleClick += DefaultCanvas_MouseDoubleClick;
         }
 
         private void DefaultCanvas_Paint(object sender, PaintEventArgs e)
         {
-            foreach(DrawingObject drawingObject in drawingObjectList)
+            foreach(DrawingObject drawingObject in DrawingObjectList)
             {
                 drawingObject.SetGraphics(e.Graphics);
                 drawingObject.Draw();
@@ -63,6 +64,15 @@ namespace DrawingToolkit
             }
         }
 
+        private void DefaultCanvas_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (this.currentActiveTool != null)
+            {
+                this.currentActiveTool.ToolMouseDoubleClick(sender, e);
+                this.Repaint();
+            }
+        }
+
         public ITool GetActiveTool()
         {
             return this.currentActiveTool;
@@ -75,25 +85,50 @@ namespace DrawingToolkit
 
         public void AddDrawingObject(DrawingObject drawingObject)
         {
-            this.drawingObjectList.Add(drawingObject);
+            this.DrawingObjectList.Add(drawingObject);
             this.Repaint();
         }
 
         public void RemoveDrawingObject(DrawingObject drawingObject)
         {
-            this.drawingObjectList.Remove(drawingObject);
+            this.DrawingObjectList.Remove(drawingObject);
             this.Repaint();
         }
 
-        public DrawingObject GetDrawingObject(Point e)
+        public DrawingObject GetObjectAt(Point e)
         {
-            throw new NotImplementedException();
+            foreach (DrawingObject drawingObject in DrawingObjectList)
+            {
+                if (drawingObject.Intersect(e))
+                {
+                    return drawingObject;
+                }
+            }
+            return null;
         }
 
         public void Repaint()
         {
             this.Invalidate();
             this.Update();
+        }
+
+        public DrawingObject SelectObjectAt(Point e)
+        {
+            DrawingObject drawingObject = GetObjectAt(e);
+            if (drawingObject != null)
+            {
+                drawingObject.Select();
+            }
+            return drawingObject;
+        }
+
+        public void DeselectAllObject()
+        {
+            foreach (DrawingObject drawingObject in DrawingObjectList)
+            {
+                drawingObject.Deselect();
+            }
         }
     }
 }
