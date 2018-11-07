@@ -30,7 +30,7 @@ namespace DrawingToolkit
             this.EndPoint = endpoint;
         }
 
-        public override void Draw()
+        public void Render()
         {
             if (GetGraphics() != null)
             {
@@ -59,19 +59,19 @@ namespace DrawingToolkit
         public override void RenderOnPreviewState()
         {
             SetPenStyle(Color.Red, 2.0f, DashStyle.Dot);
-            Draw();
+            Render();
         }
 
         public override void RenderOnEditState()
         {
             SetPenStyle(Color.Blue, 2.0f, DashStyle.Solid);
-            Draw();
+            Render();
         }
 
         public override void RenderOnStaticState()
         {
             SetPenStyle(Color.Black, 2.0f, DashStyle.Solid);
-            Draw();
+            Render();
         }
 
         public override void Translate(int xAmount, int yAmount)

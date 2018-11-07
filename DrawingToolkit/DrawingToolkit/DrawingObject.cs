@@ -29,13 +29,8 @@ namespace DrawingToolkit
 
         public virtual void SetPenStyle(Color color, float width, DashStyle dashStyle)
         {
-            if (Pen == null)
-            {
-                Pen = new Pen(color, width);
-            }
-            Pen.Color = color;
-            Pen.Width = width;
-            Pen.DashStyle = dashStyle;
+            this.Pen = new Pen(color, width);
+            this.Pen.DashStyle = dashStyle;
         }
 
         public virtual void Draw()
