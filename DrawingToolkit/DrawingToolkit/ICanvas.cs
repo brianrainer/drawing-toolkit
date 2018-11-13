@@ -15,12 +15,16 @@ namespace DrawingToolkit
 
         void AddDrawingObject(DrawingObject drawingObject);
         void RemoveDrawingObject(DrawingObject drawingObject);
+        void RemoveObjectsFromList(List<DrawingObject> drawingObjectList);
+
         DrawingObject GetObjectAt(Point e);
         DrawingObject SelectObjectAt(Point e);
+
         void DeselectObjectAt(Point e);
-        List<DrawingObject> GetObjectList();
         void DeselectAllObject();
 
+        List<DrawingObject> GetObjectList();
+        
         void Repaint();
     }
 }

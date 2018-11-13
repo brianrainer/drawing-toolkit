@@ -27,6 +27,9 @@ namespace DrawingToolkit
             this.MouseMove += DefaultCanvas_MouseMove;
             this.MouseClick += DefaultCanvas_MouseClick;
             this.MouseDoubleClick += DefaultCanvas_MouseDoubleClick;
+
+            this.KeyDown += DefaultCanvas_KeyDown;
+            this.KeyUp += DefaultCanvas_KeyUp;
         }
 
         private void DefaultCanvas_Paint(object sender, PaintEventArgs e)
@@ -83,6 +86,24 @@ namespace DrawingToolkit
             }
         }
 
+        private void DefaultCanvas_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (this.currentActiveTool != null)
+            {
+                this.currentActiveTool.ToolKeyDown(sender, e);
+                this.Repaint();
+            }
+        }
+
+        private void DefaultCanvas_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (this.currentActiveTool != null)
+            {
+                this.currentActiveTool.ToolKeyUp(sender, e);
+                this.Repaint();
+            }
+        }
+
         public ITool GetActiveTool()
         {
             return this.currentActiveTool;
@@ -102,6 +123,12 @@ namespace DrawingToolkit
         public void RemoveDrawingObject(DrawingObject drawingObject)
         {
             this.DrawingObjectList.Remove(drawingObject);
+            this.Repaint();
+        }
+
+        public void RemoveObjectsFromList(List<DrawingObject> drawingObjectList)
+        {
+            this.DrawingObjectList = new List<DrawingObject>(DrawingObjectList.Except(drawingObjectList));
             this.Repaint();
         }
 

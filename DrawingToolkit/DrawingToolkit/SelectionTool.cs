@@ -45,25 +45,6 @@ namespace DrawingToolkit
 
         public void ToolMouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && canvas != null)
-            {
-                StartPoint = new Point(e.X, e.Y);
-                SelectedObject = canvas.GetObjectAt(StartPoint);
-                if (SelectedObject != null)
-                {
-                    if (SelectedObject.isSelected())
-                    {
-                        canvas.DeselectObjectAt(StartPoint);
-                        SelectedObjectList.Remove(SelectedObject);
-                        SelectedObject = null;
-                    }
-                    else
-                    {
-                        canvas.SelectObjectAt(StartPoint);
-                        SelectedObjectList.Add(SelectedObject);
-                    }
-                }
-            }
         }
 
         public void ToolMouseDown(object sender, MouseEventArgs e)
@@ -71,6 +52,21 @@ namespace DrawingToolkit
             if (e.Button == MouseButtons.Left && canvas != null)
             {
                 StartPoint = new Point(e.X, e.Y);
+                SelectedObject = canvas.GetObjectAt(StartPoint);
+                if (SelectedObject != null)
+                {
+                    if (!SelectedObject.isSelected())
+                    {
+                        canvas.SelectObjectAt(StartPoint);
+                        SelectedObjectList.Add(SelectedObject);
+                    }
+                    else
+                    {
+                        canvas.DeselectObjectAt(StartPoint);
+                        SelectedObjectList.Remove(SelectedObject);
+                        SelectedObject = null;
+                    }
+                }
             }
         }
 
@@ -90,6 +86,30 @@ namespace DrawingToolkit
         }
 
         public void ToolMouseUp(object sender, MouseEventArgs e)
+        {
+            if (!isControlPressed())
+            {
+                canvas.DeselectAllObject();
+                this.SelectedObjectList.Clear();
+            }
+        }
+
+        public bool isControlPressed()
+        {
+            return (Control.ModifierKeys == Keys.Control);
+        }
+
+        public void ToolKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.G)
+            {
+                DrawingObject Group = new GroupObject(SelectedObjectList);
+                canvas.AddDrawingObject(Group);
+                canvas.RemoveObjectsFromList(SelectedObjectList);
+            }
+        }
+
+        public void ToolKeyUp(object sender, KeyEventArgs e)
         {
         }
     }
