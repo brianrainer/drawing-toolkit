@@ -60,8 +60,9 @@ namespace DrawingToolkit
             if (e.Button == MouseButtons.Left)
             {
                 lineSegment.EndPoint = new Point(e.X, e.Y);
-                lineSegment.Select();
                 GetCanvas().AddDrawingObject(lineSegment);
+                GetCanvas().DeselectAllObject();
+                lineSegment.Select();
             }
         }
 

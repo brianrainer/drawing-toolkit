@@ -15,7 +15,6 @@ namespace DrawingToolkit
 
         public Rectangle()
         {
-            SetPenStyle(Color.Black, 2.0f, DashStyle.Solid);
         }
 
         public Rectangle(Point StartPoint) : this()
@@ -28,7 +27,7 @@ namespace DrawingToolkit
             this.EndPoint = EndPoint;
         }
 
-        public void Render()
+        public override void Render()
         {
             if(GetGraphics() != null)
             {
@@ -44,7 +43,14 @@ namespace DrawingToolkit
 
         public override bool Intersect(Point testPoint)
         {
-            if (testPoint.X >= StartPoint.X && testPoint.X <= EndPoint.X && testPoint.Y >= StartPoint.Y && testPoint.Y <= EndPoint.Y)
+            if ((testPoint.X >= Math.Min(StartPoint.X,EndPoint.X) && 
+                testPoint.X <= Math.Max(StartPoint.X,EndPoint.X) && 
+                (Math.Abs(testPoint.Y-StartPoint.Y) < EPSILON || 
+                Math.Abs(testPoint.Y-EndPoint.Y) < EPSILON)) || 
+                (testPoint.Y >= Math.Min(StartPoint.Y,EndPoint.Y) && 
+                testPoint.Y <= Math.Max(StartPoint.Y,EndPoint.Y) && 
+                (Math.Abs(testPoint.X-StartPoint.X) < EPSILON || 
+                Math.Abs(testPoint.X-EndPoint.X) < EPSILON)))
             {
                 return true;
             }
@@ -55,25 +61,6 @@ namespace DrawingToolkit
         {
             StartPoint = new Point(StartPoint.X + xAmount, StartPoint.Y + yAmount);
             EndPoint = new Point(EndPoint.X + xAmount, EndPoint.Y + yAmount);
-        }
-
-
-        public override void RenderOnPreviewState()
-        {
-            SetPenStyle(Color.Red, 2.0f, DashStyle.Dot);
-            Render();
-        }
-
-        public override void RenderOnEditState()
-        {
-            SetPenStyle(Color.Blue, 2.0f, DashStyle.Solid);
-            Render();
-        }
-
-        public override void RenderOnStaticState()
-        {
-            SetPenStyle(Color.Black, 2.0f, DashStyle.Solid);
-            Render();
         }
 
         public override bool Add(DrawingObject drawingObject)

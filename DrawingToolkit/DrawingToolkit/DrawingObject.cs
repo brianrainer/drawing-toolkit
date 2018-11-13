@@ -10,6 +10,7 @@ namespace DrawingToolkit
 {
     public abstract class DrawingObject
     {
+        protected const Double EPSILON = 3.0;
         private DrawingState state;
         private Graphics graphics;
         public Pen Pen { get; set; }
@@ -19,23 +20,24 @@ namespace DrawingToolkit
             ChangeState(PreviewState.GetInstance());
         }
 
-
         public abstract bool Intersect(Point testPoint);
         public abstract void Translate(int xAmount, int yAmount);
 
-        public abstract void RenderOnPreviewState();
-        public abstract void RenderOnEditState();
-        public abstract void RenderOnStaticState();
-
         public virtual void SetPenStyle(Color color, float width, DashStyle dashStyle)
         {
-            this.Pen = new Pen(color, width);
-            this.Pen.DashStyle = dashStyle;
+            this.Pen = new Pen(color, width)
+            {
+                DashStyle = dashStyle
+            };
         }
 
         public virtual void Draw()
         {
             this.state.Draw(this);
+        }
+
+        public virtual void Render()
+        {
         }
 
         public virtual void SetGraphics(Graphics graphics)

@@ -57,6 +57,8 @@ namespace DrawingToolkit
             {
                 rectangle.EndPoint = new System.Drawing.Point(e.X, e.Y);
                 GetCanvas().AddDrawingObject(rectangle);
+                GetCanvas().DeselectAllObject();
+                rectangle.Select();
             }
         }
 

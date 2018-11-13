@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,8 @@ namespace DrawingToolkit
 
         public override void Draw(DrawingObject drawingObject)
         {
-            drawingObject.RenderOnPreviewState();
+            drawingObject.SetPenStyle(Color.Red, 2.0f, System.Drawing.Drawing2D.DashStyle.Dot);
+            drawingObject.Render();
         }
 
         public override void Select(DrawingObject drawingObject)
