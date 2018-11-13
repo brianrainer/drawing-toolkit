@@ -69,5 +69,9 @@ namespace DrawingToolkit
         public void ToolMouseDoubleClick(object sender, MouseEventArgs e)
         {
         }
+
+        public void ToolMouseClick(object sender, MouseEventArgs e)
+        {
+        }
     }
 }

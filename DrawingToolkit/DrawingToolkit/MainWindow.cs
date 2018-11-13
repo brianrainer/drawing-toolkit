@@ -44,6 +44,7 @@ namespace DrawingToolkit
         {
             if (this.canvas != null)
             {
+                this.canvas.DeselectAllObject();
                 this.canvas.SetActiveTool(tool);
                 tool.TargetCanvas = this.canvas;
             }

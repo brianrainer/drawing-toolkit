@@ -25,6 +25,7 @@ namespace DrawingToolkit
             this.MouseUp += DefaultCanvas_MouseUp;
             this.MouseDown += DefaultCanvas_MouseDown;
             this.MouseMove += DefaultCanvas_MouseMove;
+            this.MouseClick += DefaultCanvas_MouseClick;
             this.MouseDoubleClick += DefaultCanvas_MouseDoubleClick;
         }
 
@@ -60,6 +61,15 @@ namespace DrawingToolkit
             if (this.currentActiveTool != null)
             {
                 this.currentActiveTool.ToolMouseMove(sender, e);
+                this.Repaint();
+            }
+        }
+
+        private void DefaultCanvas_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (this.currentActiveTool != null)
+            {
+                this.currentActiveTool.ToolMouseClick(sender, e);
                 this.Repaint();
             }
         }
@@ -123,12 +133,26 @@ namespace DrawingToolkit
             return drawingObject;
         }
 
+        public void DeselectObjectAt(Point e)
+        {
+            DrawingObject drawingObject = GetObjectAt(e);
+            if (drawingObject != null)
+            {
+                drawingObject.Deselect();
+            }
+        }
+
         public void DeselectAllObject()
         {
             foreach (DrawingObject drawingObject in DrawingObjectList)
             {
                 drawingObject.Deselect();
             }
+        }
+
+        public List<DrawingObject> GetObjectList()
+        {
+            return DrawingObjectList;
         }
     }
 }

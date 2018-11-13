@@ -61,6 +61,7 @@
     <Compile Include="ExampleToolbarItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GroupObject.cs" />
     <Compile Include="ICanvas.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="ITool.cs" />

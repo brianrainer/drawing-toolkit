@@ -11,12 +11,14 @@ namespace DrawingToolkit
     public abstract class DrawingObject
     {
         protected const Double EPSILON = 3.0;
-        private DrawingState state;
+        public Guid ID { get; set; }
+        protected DrawingState state;
         private Graphics graphics;
         public Pen Pen { get; set; }
 
         public DrawingObject()
         {
+            ID = Guid.NewGuid();
             ChangeState(PreviewState.GetInstance());
         }
 
@@ -40,6 +42,7 @@ namespace DrawingToolkit
         {
         }
 
+
         public virtual void SetGraphics(Graphics graphics)
         {
             this.graphics = graphics;
@@ -50,17 +53,22 @@ namespace DrawingToolkit
             return this.graphics;
         }
 
-        public void ChangeState(DrawingState state)
+        public virtual void ChangeState(DrawingState state)
         {
             this.state = state;
         }
 
-        public void Select()
+        public virtual bool isSelected()
+        {
+            return state == EditState.GetInstance();
+        }
+
+        public virtual void Select()
         {
             this.state.Select(this);
         }
 
-        public void Deselect()
+        public virtual void Deselect()
         {
             this.state.Deselect(this);
         }

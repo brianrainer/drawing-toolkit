@@ -13,6 +13,8 @@ namespace DrawingToolkit
         private ICanvas canvas;
         private DrawingObject SelectedObject;
         private Point StartPoint;
+        
+        private List<DrawingObject> SelectedObjectList;
 
         public SelectionTool()
         {
@@ -20,6 +22,7 @@ namespace DrawingToolkit
             this.ToolTipText = "Selection Tool";
             this.Text = "Select";
             this.CheckOnClick = true;
+            this.SelectedObjectList = new List<DrawingObject>();
         }
 
         public Cursor cursor => Cursors.Arrow;
@@ -42,16 +45,32 @@ namespace DrawingToolkit
 
         public void ToolMouseDoubleClick(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Left && canvas != null)
+            {
+                StartPoint = new Point(e.X, e.Y);
+                SelectedObject = canvas.GetObjectAt(StartPoint);
+                if (SelectedObject != null)
+                {
+                    if (SelectedObject.isSelected())
+                    {
+                        canvas.DeselectObjectAt(StartPoint);
+                        SelectedObjectList.Remove(SelectedObject);
+                        SelectedObject = null;
+                    }
+                    else
+                    {
+                        canvas.SelectObjectAt(StartPoint);
+                        SelectedObjectList.Add(SelectedObject);
+                    }
+                }
+            }
         }
 
         public void ToolMouseDown(object sender, MouseEventArgs e)
         {
-            StartPoint = new Point(e.X, e.Y);
-
             if (e.Button == MouseButtons.Left && canvas != null)
             {
-                canvas.DeselectAllObject();
-                SelectedObject = canvas.SelectObjectAt(StartPoint);
+                StartPoint = new Point(e.X, e.Y);
             }
         }
 
@@ -59,11 +78,14 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left && canvas != null)
             {
-                if (SelectedObject != null)
+                foreach (DrawingObject obj in SelectedObjectList)
                 {
-                    SelectedObject.Translate(e.X - StartPoint.X, e.Y - StartPoint.Y);
-                    StartPoint = new Point(e.X, e.Y);
+                    if (obj != null)
+                    {
+                        obj.Translate(e.X - StartPoint.X, e.Y - StartPoint.Y);
+                    }
                 }
+                StartPoint = new Point(e.X, e.Y);
             }
         }
 

@@ -17,6 +17,8 @@ namespace DrawingToolkit
         void RemoveDrawingObject(DrawingObject drawingObject);
         DrawingObject GetObjectAt(Point e);
         DrawingObject SelectObjectAt(Point e);
+        void DeselectObjectAt(Point e);
+        List<DrawingObject> GetObjectList();
         void DeselectAllObject();
 
         void Repaint();
