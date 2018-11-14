@@ -62,15 +62,5 @@ namespace DrawingToolkit
             StartPoint = new Point(StartPoint.X + xAmount, StartPoint.Y + yAmount);
             EndPoint = new Point(EndPoint.X + xAmount, EndPoint.Y + yAmount);
         }
-
-        public override bool Add(DrawingObject drawingObject)
-        {
-            return false;
-        }
-
-        public override bool Remove(DrawingObject drawingObject)
-        {
-            return false;
-        }
     }
 }

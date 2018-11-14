@@ -45,6 +45,15 @@ namespace DrawingToolkit
 
         public void ToolMouseDoubleClick(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Left && canvas != null)
+            {
+                if (canvas.GetObjectAt(new Point(e.X,e.Y)) == null)
+                {
+                    canvas.DeselectAllObject();
+                    SelectedObject = null;
+                    SelectedObjectList.Clear();
+                }
+            }
         }
 
         public void ToolMouseDown(object sender, MouseEventArgs e)
@@ -87,18 +96,8 @@ namespace DrawingToolkit
 
         public void ToolMouseUp(object sender, MouseEventArgs e)
         {
-            if (!isControlPressed())
-            {
-                canvas.DeselectAllObject();
-                this.SelectedObjectList.Clear();
-            }
         }
-
-        public bool isControlPressed()
-        {
-            return (Control.ModifierKeys == Keys.Control);
-        }
-
+        
         public void ToolKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.G)
@@ -106,6 +105,22 @@ namespace DrawingToolkit
                 DrawingObject Group = new GroupObject(SelectedObjectList);
                 canvas.AddDrawingObject(Group);
                 canvas.RemoveObjectsFromList(SelectedObjectList);
+                SelectedObjectList.Clear();
+                SelectedObjectList.Add(Group);
+            }
+            else if (e.Control && e.KeyCode == Keys.H)
+            {
+                foreach (DrawingObject obj in SelectedObjectList)
+                {
+                    if (obj.isComposite())
+                    {
+                        canvas.RemoveDrawingObject(obj);
+                        canvas.AddObjectsToList(obj.GetObjectList());
+                    }
+                }
+                canvas.DeselectAllObject();
+                SelectedObject = null;
+                SelectedObjectList.Clear();
             }
         }
 

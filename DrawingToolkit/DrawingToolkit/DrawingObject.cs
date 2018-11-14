@@ -73,14 +73,22 @@ namespace DrawingToolkit
             this.state.Deselect(this);
         }
 
-        public virtual bool Add(DrawingObject drawingObject)
+        public virtual bool isComposite()
         {
-            return false;  // default implementation is object not composite
+            return false; // default
         }
 
-        public virtual bool Remove(DrawingObject drawingObject)
+        public virtual void Add(DrawingObject drawingObject)
         {
-            return false;  // default implementation is object not composite
+        }
+
+        public virtual void Remove(DrawingObject drawingObject)
+        {
+        }
+
+        public virtual List<DrawingObject> GetObjectList()
+        {
+            return new List<DrawingObject>();
         }
     }
 }

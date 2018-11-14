@@ -104,6 +104,12 @@ namespace DrawingToolkit
             }
         }
 
+        public void Repaint()
+        {
+            this.Invalidate();
+            this.Update();
+        }
+
         public ITool GetActiveTool()
         {
             return this.currentActiveTool;
@@ -118,6 +124,15 @@ namespace DrawingToolkit
         {
             this.DrawingObjectList.Add(drawingObject);
             this.Repaint();
+        }
+
+        public void AddObjectsToList(List<DrawingObject> drawingObjectList)
+        {
+            foreach (DrawingObject obj in drawingObjectList)
+            {
+                this.DrawingObjectList.Add(obj);
+                this.Repaint();
+            }
         }
 
         public void RemoveDrawingObject(DrawingObject drawingObject)
@@ -144,10 +159,9 @@ namespace DrawingToolkit
             return null;
         }
 
-        public void Repaint()
+        public List<DrawingObject> GetObjectList()
         {
-            this.Invalidate();
-            this.Update();
+            return DrawingObjectList;
         }
 
         public DrawingObject SelectObjectAt(Point e)
@@ -158,6 +172,15 @@ namespace DrawingToolkit
                 drawingObject.Select();
             }
             return drawingObject;
+        }
+
+        public List<DrawingObject> SelectAllObject()
+        {
+            foreach (DrawingObject obj in DrawingObjectList)
+            {
+                obj.Select();
+            }
+            return DrawingObjectList;
         }
 
         public void DeselectObjectAt(Point e)
@@ -175,11 +198,6 @@ namespace DrawingToolkit
             {
                 drawingObject.Deselect();
             }
-        }
-
-        public List<DrawingObject> GetObjectList()
-        {
-            return DrawingObjectList;
         }
     }
 }
