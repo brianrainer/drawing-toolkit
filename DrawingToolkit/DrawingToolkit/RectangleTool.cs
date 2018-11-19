@@ -46,7 +46,8 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                rectangle.EndPoint = new System.Drawing.Point(e.X, e.Y);
+                GetCanvas().RemoveDrawingObject(rectangle);
+                rectangle = new Rectangle(rectangle.StartPoint, new System.Drawing.Point(e.X, e.Y));
                 GetCanvas().AddDrawingObject(rectangle);
             }
         }
@@ -55,7 +56,8 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                rectangle.EndPoint = new System.Drawing.Point(e.X, e.Y);
+                GetCanvas().RemoveDrawingObject(rectangle);
+                rectangle = new Rectangle(rectangle.StartPoint, new System.Drawing.Point(e.X, e.Y));
                 GetCanvas().AddDrawingObject(rectangle);
                 GetCanvas().DeselectAllObject();
                 rectangle.Select();

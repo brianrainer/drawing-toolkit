@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DrawingToolkit
 {
-    public abstract class DrawingObject
+    public abstract class DrawingObject : IObserver, IObservable
     {
         protected const Double EPSILON = 3.0;
         public Guid ID { get; set; }
@@ -89,6 +89,22 @@ namespace DrawingToolkit
         public virtual List<DrawingObject> GetObjectList()
         {
             return new List<DrawingObject>();
+        }
+
+        public virtual void OnUpdate(DrawingObject sender, Point point)
+        {
+        }
+
+        public virtual void OnChange(DrawingObject sender, Point point)
+        {
+        }
+
+        public virtual void AddObserver(DrawingObject observer)
+        {
+        }
+
+        public virtual void RemoveObserver(DrawingObject observer)
+        {
         }
     }
 }

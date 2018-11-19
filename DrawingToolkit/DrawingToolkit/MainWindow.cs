@@ -31,11 +31,13 @@ namespace DrawingToolkit
             #region toolbox
             this.toolbox = new DefaultToolbox();
             this.toolStripContainer1.LeftToolStripPanel.Controls.Add((Control)this.toolbox);
+            this.toolbox.AddTool(new SelectionTool());
+            this.toolbox.AddSeparator();
             this.toolbox.AddTool(new LineTool());
             this.toolbox.AddSeparator();
             this.toolbox.AddTool(new RectangleTool());
             this.toolbox.AddSeparator();
-            this.toolbox.AddTool(new SelectionTool());
+            this.toolbox.AddTool(new CircleTool());
             this.toolbox.ToolSelected += toolBox_ToolSelected;
             #endregion
         }

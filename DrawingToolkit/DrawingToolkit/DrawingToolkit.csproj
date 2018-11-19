@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Circle.cs" />
     <Compile Include="DefaultCanvas.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -58,12 +59,17 @@
     <Compile Include="DrawingObject.cs" />
     <Compile Include="DrawingState.cs" />
     <Compile Include="EditState.cs" />
+    <Compile Include="CircleTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ExampleToolbarItem.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="GroupObject.cs" />
     <Compile Include="ICanvas.cs" />
     <Compile Include="ICommand.cs" />
+    <Compile Include="IObservable.cs" />
+    <Compile Include="IObserver.cs" />
     <Compile Include="ITool.cs" />
     <Compile Include="IToolbar.cs" />
     <Compile Include="IToolbarItem.cs" />

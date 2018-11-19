@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,17 +7,17 @@ using System.Windows.Forms;
 
 namespace DrawingToolkit
 {
-    public class LineTool : ToolStripButton, ITool
+    public class CircleTool : ToolStripButton, ITool
     {
         private ICanvas canvas;
-        private LineSegment lineSegment;
+        private Circle ellipse;
 
-        public LineTool()
+        public CircleTool()
         {
-            this.Name = "Line Tool";
-            this.ToolTipText = "Line Tool";
+            this.Name = "Circle Tool";
+            this.ToolTipText = "Circle Tool";
+            this.Text = "Circle";
             this.CheckOnClick = true;
-            this.Text = "Line";
         }
 
         public Cursor cursor => Cursors.Arrow;
@@ -39,7 +38,7 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                lineSegment = new LineSegment(new Point(e.X, e.Y));
+                ellipse = new Circle(new System.Drawing.Point(e.X, e.Y));
             }
         }
 
@@ -47,9 +46,9 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                GetCanvas().RemoveDrawingObject(lineSegment);
-                lineSegment = new LineSegment(lineSegment.StartPoint, new Point(e.X, e.Y));
-                GetCanvas().AddDrawingObject(lineSegment);
+                GetCanvas().RemoveDrawingObject(ellipse);
+                ellipse = new Circle(ellipse.CenterPoint, new System.Drawing.Point(e.X, e.Y));
+                GetCanvas().AddDrawingObject(ellipse);
             }
         }
 
@@ -57,11 +56,11 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                GetCanvas().RemoveDrawingObject(lineSegment);
-                lineSegment = new LineSegment(lineSegment.StartPoint, new Point(e.X, e.Y));
-                GetCanvas().AddDrawingObject(lineSegment);
+                GetCanvas().RemoveDrawingObject(ellipse);
+                ellipse = new Circle(ellipse.CenterPoint, new System.Drawing.Point(e.X, e.Y));
+                GetCanvas().AddDrawingObject(ellipse);
                 GetCanvas().DeselectAllObject();
-                lineSegment.Select();
+                ellipse.Select();
             }
         }
 
