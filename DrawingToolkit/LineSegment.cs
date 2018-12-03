@@ -25,6 +25,7 @@ namespace DrawingToolkit
         public LineSegment(Point startpoint, Point endpoint) : this(startpoint)
         {
             this.EndPoint = endpoint;
+            this.CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
         }
 
         public override void Render()
@@ -57,6 +58,7 @@ namespace DrawingToolkit
         {
             StartPoint = new Point(StartPoint.X + xAmount, StartPoint.Y + yAmount);
             EndPoint = new Point(EndPoint.X + xAmount, EndPoint.Y + yAmount);
+            CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
         }
     }
 }

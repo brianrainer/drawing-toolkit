@@ -15,6 +15,7 @@ namespace DrawingToolkit
         protected DrawingState state;
         private Graphics graphics;
         public Pen Pen { get; set; }
+        public Point CenterPoint { get; set; }
 
         public DrawingObject()
         {
@@ -63,6 +64,15 @@ namespace DrawingToolkit
             return state == EditState.GetInstance();
         }
 
+        protected virtual bool isNear(Point a, Point b)
+        {
+            if (Math.Abs(a.X-b.X)<=EPSILON && Math.Abs(a.Y - b.Y) <= EPSILON)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public virtual void Select()
         {
             this.state.Select(this);
@@ -91,11 +101,11 @@ namespace DrawingToolkit
             return new List<DrawingObject>();
         }
 
-        public virtual void OnUpdate(DrawingObject sender, Point point)
+        public virtual void Update(Point updatedPoint, int xAmount, int yAmount)
         {
         }
 
-        public virtual void OnChange(DrawingObject sender, Point point)
+        public virtual void OnChange(int xAmount, int yAmount)
         {
         }
 

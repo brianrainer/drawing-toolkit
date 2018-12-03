@@ -25,6 +25,7 @@ namespace DrawingToolkit
         public Rectangle(Point StartPoint, Point EndPoint) : this(StartPoint)
         {
             this.EndPoint = EndPoint;
+            this.CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
         }
 
         public override void Render()
@@ -61,6 +62,7 @@ namespace DrawingToolkit
         {
             StartPoint = new Point(StartPoint.X + xAmount, StartPoint.Y + yAmount);
             EndPoint = new Point(EndPoint.X + xAmount, EndPoint.Y + yAmount);
+            CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
         }
     }
 }

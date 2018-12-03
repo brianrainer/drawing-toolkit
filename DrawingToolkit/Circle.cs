@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace DrawingToolkit
 {
-    class Circle : DrawingObject
+    public class Circle : DrawingObject
     {
-        public Point CenterPoint { get; set; }
         public float Radius { get; set; }
 
         public List<DrawingObject> Observers;
@@ -52,19 +51,23 @@ namespace DrawingToolkit
 
         public override void Translate(int xAmount, int yAmount)
         {
+            this.OnChange(xAmount, yAmount);
             CenterPoint = new Point(CenterPoint.X + xAmount, CenterPoint.Y + yAmount);
         }
 
-        public override void OnUpdate(DrawingObject sender, Point point)
+        public override void Update(Point updatedPoint, int xAmount, int yAmount)
         {
-            this.Translate(point.X, point.Y);   
+            if (isNear(updatedPoint, CenterPoint))
+            {
+                CenterPoint = new Point(CenterPoint.X + xAmount, CenterPoint.Y + yAmount);
+            }
         }
 
-        public override void OnChange(DrawingObject sender, Point point)
+        public override void OnChange(int xAmount, int yAmount)
         {
             foreach (DrawingObject observer in Observers)
             {
-                observer.OnUpdate(sender, point);
+                observer.Update(CenterPoint, xAmount, yAmount);
             }
         }
 

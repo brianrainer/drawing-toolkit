@@ -47,6 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Circle.cs" />
+    <Compile Include="ConnectorSegment.cs" />
+    <Compile Include="ConnectorTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DefaultCanvas.cs">
       <SubType>Component</SubType>
     </Compile>

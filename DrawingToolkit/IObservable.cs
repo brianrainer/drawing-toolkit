@@ -9,7 +9,7 @@ namespace DrawingToolkit
 {
     interface IObservable
     {
-        void OnChange(DrawingObject sender, Point point);
+        void OnChange(int xAmount, int yAmount);
         void AddObserver(DrawingObject observer);
         void RemoveObserver(DrawingObject observer);
     }
