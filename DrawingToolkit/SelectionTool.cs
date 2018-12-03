@@ -100,7 +100,7 @@ namespace DrawingToolkit
         
         public void ToolKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.G)
+            if (e.Control && e.KeyCode == Keys.G) // group
             {
                 DrawingObject Group = new GroupObject(SelectedObjectList);
                 canvas.AddDrawingObject(Group);
@@ -108,7 +108,7 @@ namespace DrawingToolkit
                 SelectedObjectList.Clear();
                 SelectedObjectList.Add(Group);
             }
-            else if (e.Control && e.KeyCode == Keys.H)
+            else if (e.Control && e.KeyCode == Keys.U) // ungroup
             {
                 foreach (DrawingObject obj in SelectedObjectList)
                 {
@@ -121,6 +121,35 @@ namespace DrawingToolkit
                 canvas.DeselectAllObject();
                 SelectedObject = null;
                 SelectedObjectList.Clear();
+            }
+            else if (e.Control && e.KeyCode == Keys.N) // next
+            {
+
+            }
+            else if (e.Control && e.KeyCode == Keys.P) // prev
+            {
+
+            }
+            else if (e.Control && e.KeyCode == Keys.L) //last
+            {
+                canvas.RemoveObjectsFromList(SelectedObjectList);
+                canvas.AddObjectsToList(SelectedObjectList);
+            }
+            else if (e.Control && e.KeyCode == Keys.F) // first
+            {
+                canvas.RemoveObjectsFromList(SelectedObjectList);
+                List<DrawingObject> OriginalList = canvas.GetObjectList();
+                canvas.ClearObjectList();
+                canvas.AddObjectsToList(SelectedObjectList);
+                canvas.AddObjectsToList(OriginalList);
+            }
+            else if (e.Control && e.KeyCode == Keys.S) // show
+            {
+
+            }
+            else if (e.Control && e.KeyCode == Keys.H) // hide
+            {
+
             }
         }
 

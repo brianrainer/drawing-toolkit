@@ -147,10 +147,16 @@ namespace DrawingToolkit
             this.Repaint();
         }
 
+        public void ClearObjectList()
+        {
+            this.DrawingObjectList = new List<DrawingObject>();
+        }
+
         public DrawingObject GetObjectAt(Point e)
         {
-            foreach (DrawingObject drawingObject in DrawingObjectList)
+            for(int i=DrawingObjectList.Count-1;i>=0;i--)
             {
+                DrawingObject drawingObject = DrawingObjectList[i];
                 if (drawingObject.Intersect(e))
                 {
                     return drawingObject;

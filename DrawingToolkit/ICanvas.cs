@@ -17,6 +17,7 @@ namespace DrawingToolkit
         void AddObjectsToList(List<DrawingObject> drawingObjectList);
         void RemoveDrawingObject(DrawingObject drawingObject);
         void RemoveObjectsFromList(List<DrawingObject> drawingObjectList);
+        void ClearObjectList();
 
         DrawingObject GetObjectAt(Point e);
         List<DrawingObject> GetObjectList();
