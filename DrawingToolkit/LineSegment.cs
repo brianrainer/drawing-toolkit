@@ -15,17 +15,18 @@ namespace DrawingToolkit
 
         public LineSegment()
         {
+            Observers = new List<DrawingObject>();
         }
 
         public LineSegment(Point startpoint) : this()
         {
-            this.StartPoint = startpoint;
+            StartPoint = startpoint;
         }
 
         public LineSegment(Point startpoint, Point endpoint) : this(startpoint)
         {
-            this.EndPoint = endpoint;
-            this.CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
+            EndPoint = endpoint;
+            CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
         }
 
         public override void Render()

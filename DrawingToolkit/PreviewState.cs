@@ -27,6 +27,7 @@ namespace DrawingToolkit
         public override void Draw(DrawingObject drawingObject)
         {
             drawingObject.SetPenStyle(Color.Red, 2.0f, System.Drawing.Drawing2D.DashStyle.Dot);
+            drawingObject.SetBrushStyle(Color.PaleVioletRed);
             drawingObject.Render();
         }
 

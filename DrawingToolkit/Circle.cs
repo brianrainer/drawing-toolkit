@@ -11,11 +11,9 @@ namespace DrawingToolkit
     {
         public float Radius { get; set; }
 
-        public List<DrawingObject> Observers;
-
         public Circle()
         {
-            this.Observers = new List<DrawingObject>();
+            Observers = new List<DrawingObject>();
         }
 
         public Circle(Point CenterPoint) : this()
@@ -33,7 +31,20 @@ namespace DrawingToolkit
         {
             if (GetGraphics() != null)
             {
-                GetGraphics().DrawEllipse(Pen, CenterPoint.X - Radius, CenterPoint.Y - Radius, Radius * 2, Radius * 2);
+                GetGraphics().FillEllipse(
+                    this.Brush, 
+                    CenterPoint.X - Radius, 
+                    CenterPoint.Y - Radius, 
+                    Radius * 2, 
+                    Radius * 2
+                );
+                GetGraphics().DrawEllipse(
+                    Pen, 
+                    CenterPoint.X - Radius, 
+                    CenterPoint.Y - Radius, 
+                    Radius * 2, 
+                    Radius * 2
+                );
             }
         }
 
@@ -42,16 +53,16 @@ namespace DrawingToolkit
             double testRadius = Math.Pow(testPoint.X - CenterPoint.X, 2) + Math.Pow(testPoint.Y - CenterPoint.Y, 2);
             double minRadius = Math.Pow(Radius - EPSILON, 2);
             double maxRadius = Math.Pow(Radius + EPSILON, 2);
-            if (testRadius >= minRadius && testRadius <= maxRadius)
-            {
-                return true;
-            }
-            return false;
+
+            bool isOnBorder = testRadius >= minRadius && testRadius <= maxRadius;
+            bool isInside = testRadius <= maxRadius;
+
+            return isInside;
         }
 
         public override void Translate(int xAmount, int yAmount)
         {
-            this.OnChange(xAmount, yAmount);
+            OnChange(xAmount, yAmount);
             CenterPoint = new Point(CenterPoint.X + xAmount, CenterPoint.Y + yAmount);
         }
 
@@ -73,12 +84,12 @@ namespace DrawingToolkit
 
         public override void AddObserver(DrawingObject observer)
         {
-            this.Observers.Add(observer);
+            Observers.Add(observer);
         }
 
         public override void RemoveObserver(DrawingObject observer)
         {
-            this.Observers.Remove(observer);
+            Observers.Remove(observer);
         }
 
     }

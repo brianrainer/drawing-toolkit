@@ -12,22 +12,20 @@ namespace DrawingToolkit
         public Point StartPoint { get; set; }
         public Point EndPoint { get; set; }
 
-        public List<DrawingObject> Observers;
-
         public ConnectorSegment()
         {
-            this.Observers = new List<DrawingObject>();
+            Observers = new List<DrawingObject>();
         }
 
         public ConnectorSegment(Point startpoint) : this()
         {
-            this.StartPoint = startpoint;
+            StartPoint = startpoint;
         }
 
         public ConnectorSegment(Point startpoint, Point endpoint) : this(startpoint)
         {
-            this.EndPoint = endpoint;
-            this.CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y)/2);
+            EndPoint = endpoint;
+            CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y)/2);
         }
 
         public override void Render()
@@ -87,12 +85,12 @@ namespace DrawingToolkit
 
         public override void AddObserver(DrawingObject observer)
         {
-            this.Observers.Add(observer);
+            Observers.Add(observer);
         }
 
         public override void RemoveObserver(DrawingObject observer)
         {
-            this.Observers.Remove(observer);
+            Observers.Remove(observer);
         }
 
     }

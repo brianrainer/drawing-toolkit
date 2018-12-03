@@ -15,7 +15,9 @@ namespace DrawingToolkit
         protected DrawingState state;
         private Graphics graphics;
         public Pen Pen { get; set; }
+        public Brush Brush { get; set; }
         public Point CenterPoint { get; set; }
+        public List<DrawingObject> Observers { get; set; }
 
         public DrawingObject()
         {
@@ -28,10 +30,15 @@ namespace DrawingToolkit
 
         public virtual void SetPenStyle(Color color, float width, DashStyle dashStyle)
         {
-            this.Pen = new Pen(color, width)
+            Pen = new Pen(color, width)
             {
                 DashStyle = dashStyle
             };
+        }
+
+        public virtual void SetBrushStyle(Color color)
+        {
+            Brush = new SolidBrush(color);
         }
 
         public virtual void Draw()
