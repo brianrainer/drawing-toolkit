@@ -10,16 +10,16 @@ namespace DrawingToolkit
     public class Circle : DrawingObject
     {
         public float Radius { get; set; }
+        public Point CenterPoint { get; set; }
 
         public Circle()
         {
-            Observers = new List<DrawingObject>();
+            Radius = 0;
         }
 
         public Circle(Point CenterPoint) : this()
         {
             this.CenterPoint = CenterPoint;
-            Radius = 0;
         }
 
         public Circle(Point CenterPoint, Point radiusPoint) : this(CenterPoint)
@@ -32,14 +32,14 @@ namespace DrawingToolkit
             if (GetGraphics() != null)
             {
                 GetGraphics().FillEllipse(
-                    this.Brush, 
+                    GetBrush(), 
                     CenterPoint.X - Radius, 
                     CenterPoint.Y - Radius, 
                     Radius * 2, 
                     Radius * 2
                 );
                 GetGraphics().DrawEllipse(
-                    Pen, 
+                    GetPen(), 
                     CenterPoint.X - Radius, 
                     CenterPoint.Y - Radius, 
                     Radius * 2, 
@@ -62,35 +62,8 @@ namespace DrawingToolkit
 
         public override void Translate(int xAmount, int yAmount)
         {
-            OnChange(xAmount, yAmount);
             CenterPoint = new Point(CenterPoint.X + xAmount, CenterPoint.Y + yAmount);
+            OnChange(xAmount, yAmount);
         }
-
-        public override void Update(Point updatedPoint, int xAmount, int yAmount)
-        {
-            if (isNear(updatedPoint, CenterPoint))
-            {
-                CenterPoint = new Point(CenterPoint.X + xAmount, CenterPoint.Y + yAmount);
-            }
-        }
-
-        public override void OnChange(int xAmount, int yAmount)
-        {
-            foreach (DrawingObject observer in Observers)
-            {
-                observer.Update(CenterPoint, xAmount, yAmount);
-            }
-        }
-
-        public override void AddObserver(DrawingObject observer)
-        {
-            Observers.Add(observer);
-        }
-
-        public override void RemoveObserver(DrawingObject observer)
-        {
-            Observers.Remove(observer);
-        }
-
     }
 }

@@ -56,10 +56,15 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                StartObject = GetCanvas().GetObjectAt(new Point(e.X,e.Y));
+                Point contactPoint = new Point(e.X, e.Y);
+                StartObject = GetCanvas().GetObjectAt(contactPoint);
                 if (StartObject != null)
                 {
-                    connectorSegment = new ConnectorSegment(StartObject.CenterPoint);
+                    connectorSegment = new ConnectorSegment(contactPoint);
+                }
+                else
+                {
+                    connectorSegment = null;
                 }
             }
         }
@@ -68,10 +73,11 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                if (StartObject != null && connectorSegment != null)
+                Point contactPoint = new Point(e.X, e.Y);
+                if (connectorSegment != null)
                 {
                     GetCanvas().RemoveDrawingObject(connectorSegment);
-                    connectorSegment = new ConnectorSegment(connectorSegment.StartPoint, new Point(e.X, e.Y));
+                    connectorSegment = new ConnectorSegment(connectorSegment.StartPoint, contactPoint);
                     GetCanvas().AddDrawingObject(connectorSegment);
                 }
             }
@@ -81,24 +87,23 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                EndObject = GetCanvas().GetObjectAt(new Point(e.X, e.Y));
-                if (EndObject != null && StartObject != null &&
-                    connectorSegment != null &&
-                    EndObject != StartObject && EndObject != connectorSegment)
+                Point contactPoint = new Point(e.X, e.Y);
+                GetCanvas().RemoveDrawingObject(connectorSegment);
+                EndObject = GetCanvas().GetObjectAt(contactPoint);
+                //if (EndObject != null && StartObject != null && connectorSegment != null && EndObject != StartObject && EndObject != connectorSegment)
+                if (EndObject != null && EndObject != StartObject)
                 {
-                    GetCanvas().RemoveDrawingObject(connectorSegment);
-                    connectorSegment = new ConnectorSegment(connectorSegment.StartPoint, EndObject.CenterPoint);
-                    StartObject.AddObserver(connectorSegment);
-                    EndObject.AddObserver(connectorSegment);
-                    connectorSegment.AddObserver(StartObject);
-                    connectorSegment.AddObserver(EndObject);
+                    connectorSegment = new ConnectorSegment(connectorSegment.StartPoint, contactPoint);
+
+                    StartObject.AddObserver(connectorSegment, connectorSegment.StartPoint);
+                    EndObject.AddObserver(connectorSegment, contactPoint);
+
+                    connectorSegment.AddObserver(StartObject, connectorSegment.StartPoint);
+                    connectorSegment.AddObserver(EndObject, contactPoint);
+
                     GetCanvas().AddDrawingObject(connectorSegment);
-                    GetCanvas().DeselectAllObject();
                     connectorSegment.Select();
-                }
-                else
-                {
-                    GetCanvas().RemoveDrawingObject(connectorSegment);
+                    GetCanvas().DeselectAllObject();
                 }
                 connectorSegment = null;
                 StartObject = null;

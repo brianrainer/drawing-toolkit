@@ -15,7 +15,6 @@ namespace DrawingToolkit
 
         public LineSegment()
         {
-            Observers = new List<DrawingObject>();
         }
 
         public LineSegment(Point startpoint) : this()
@@ -26,32 +25,48 @@ namespace DrawingToolkit
         public LineSegment(Point startpoint, Point endpoint) : this(startpoint)
         {
             EndPoint = endpoint;
-            CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
         }
 
         public override void Render()
         {
             if (GetGraphics() != null)
             {
-                GetGraphics().DrawLine(Pen, StartPoint, EndPoint);
+                GetGraphics().DrawLine(GetPen(), StartPoint, EndPoint);
             }
         }
 
         public override bool Intersect(Point testPoint)
         {
-            double slope = GetSlope();
-            double shift = EndPoint.Y - slope * EndPoint.X;
-            double y_line = slope * testPoint.X + shift;
+            bool IsInsideBound =
+                   testPoint.X <= Math.Max(StartPoint.X, EndPoint.X) &&
+                   testPoint.X >= Math.Min(StartPoint.X, EndPoint.X) &&
+                   testPoint.Y <= Math.Max(StartPoint.Y, EndPoint.Y) &&
+                   testPoint.Y >= Math.Min(StartPoint.Y, EndPoint.Y);
 
-            if (Math.Abs(y_line - testPoint.Y) < EPSILON)
+            if (IsInsideBound)
             {
-                return true;
+                double slope = GetSlope();
+                if (slope == 1000000000 || slope == 0)
+                {
+                    return true;
+                }
+
+                double shift = EndPoint.Y - slope * EndPoint.X;
+                double y_line = slope * testPoint.X + shift;
+                if (Math.Abs(y_line - testPoint.Y) < EPSILON)
+                {
+                    return true;
+                }
             }
             return false;
         }
 
         public double GetSlope()
         {
+            if (Math.Abs(StartPoint.X - EndPoint.X) == 0)
+            {
+                return 1000000000;
+            }
             return (EndPoint.Y - StartPoint.Y) / (double)(EndPoint.X - StartPoint.X);
         }
 
@@ -59,7 +74,7 @@ namespace DrawingToolkit
         {
             StartPoint = new Point(StartPoint.X + xAmount, StartPoint.Y + yAmount);
             EndPoint = new Point(EndPoint.X + xAmount, EndPoint.Y + yAmount);
-            CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
+            OnChange(xAmount, yAmount);
         }
     }
 }

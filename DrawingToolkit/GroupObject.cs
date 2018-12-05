@@ -9,40 +9,36 @@ namespace DrawingToolkit
 {
     public class GroupObject : DrawingObject
     {
-        private List<DrawingObject> drawingObjectList;
-
-        public GroupObject(List<DrawingObject> drawingObjects)
+        public GroupObject(LinkedList<DrawingObject> drawingObjects)
         {
-            drawingObjectList = new List<DrawingObject>(drawingObjects);
+            foreach (DrawingObject obj in drawingObjects)
+            {
+                AddComposite(obj);
+            }
         }
 
-        public override bool isComposite()
+        public override bool IsComposite()
         {
             return true;
         }
 
-        public override List<DrawingObject> GetObjectList()
-        {
-            return drawingObjectList;
-        }
-
         public override void ChangeState(DrawingState state)
         {
-            if (drawingObjectList != null && drawingObjectList.Count > 0)
+            if (GetCompositeObjects() != null)
             {
-                foreach (DrawingObject obj in drawingObjectList)
+                foreach (DrawingObject obj in GetCompositeObjects())
                 {
                     obj.ChangeState(state);
                 }
-                this.state = state;
+                this.State = state;
             }
         }
 
         public override void Draw()
         {
-            if (drawingObjectList != null && drawingObjectList.Count > 0)
+            if (GetCompositeObjects() != null)
             {
-                foreach (DrawingObject obj in drawingObjectList)
+                foreach (DrawingObject obj in GetCompositeObjects())
                 {
                     obj.SetGraphics(this.GetGraphics());
                     obj.Draw();
@@ -52,9 +48,9 @@ namespace DrawingToolkit
 
         public override bool Intersect(Point testPoint)
         {
-            if (drawingObjectList != null && drawingObjectList.Count > 0)
+            if (GetCompositeObjects() != null)
             {
-                foreach (DrawingObject obj in drawingObjectList)
+                foreach (DrawingObject obj in GetCompositeObjects())
                 {
                     if (obj.Intersect(testPoint))
                     {
@@ -67,30 +63,20 @@ namespace DrawingToolkit
 
         public override void Translate(int xAmount, int yAmount)
         {
-            if (drawingObjectList != null && drawingObjectList.Count > 0)
+            if (GetCompositeObjects() != null)
             {
-                foreach (DrawingObject obj in drawingObjectList)
+                foreach (DrawingObject obj in GetCompositeObjects())
                 {
                     obj.Translate(xAmount, yAmount);
                 }
             }
         }
 
-        public override void Add(DrawingObject drawingObject)
-        {
-            this.drawingObjectList.Add(drawingObject);
-        }
-
-        public override void Remove(DrawingObject drawingObject)
-        {
-            this.drawingObjectList.Remove(drawingObject);
-        }
-
         public override void Select()
         {
-            if (drawingObjectList != null && drawingObjectList.Count > 0)
+            if (GetCompositeObjects() != null)
             {
-                foreach (DrawingObject obj in drawingObjectList)
+                foreach (DrawingObject obj in GetCompositeObjects())
                 {
                     obj.Select();
                 }
@@ -99,9 +85,9 @@ namespace DrawingToolkit
 
         public override void Deselect()
         {
-            if (drawingObjectList != null && drawingObjectList.Count > 0)
+            if (GetCompositeObjects().Count > 0)
             {
-                foreach (DrawingObject obj in drawingObjectList)
+                foreach (DrawingObject obj in GetCompositeObjects())
                 {
                     obj.Deselect();
                 }

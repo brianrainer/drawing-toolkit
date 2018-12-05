@@ -14,7 +14,7 @@ namespace DrawingToolkit
         private DrawingObject SelectedObject;
         private Point StartPoint;
         
-        private List<DrawingObject> SelectedObjectList;
+        private LinkedList<DrawingObject> SelectedObjectList;
 
         public SelectionTool()
         {
@@ -22,7 +22,7 @@ namespace DrawingToolkit
             this.ToolTipText = "Selection Tool";
             this.Text = "Select";
             this.CheckOnClick = true;
-            this.SelectedObjectList = new List<DrawingObject>();
+            this.SelectedObjectList = new LinkedList<DrawingObject>();
         }
 
         public Cursor cursor => Cursors.Arrow;
@@ -64,10 +64,10 @@ namespace DrawingToolkit
                 SelectedObject = canvas.GetObjectAt(StartPoint);
                 if (SelectedObject != null)
                 {
-                    if (!SelectedObject.isSelected())
+                    if (!SelectedObject.IsSelected())
                     {
                         canvas.SelectObjectAt(StartPoint);
-                        SelectedObjectList.Add(SelectedObject);
+                        SelectedObjectList.AddLast(SelectedObject);
                     }
                     else
                     {
@@ -106,16 +106,16 @@ namespace DrawingToolkit
                 canvas.AddDrawingObject(Group);
                 canvas.RemoveObjectsFromList(SelectedObjectList);
                 SelectedObjectList.Clear();
-                SelectedObjectList.Add(Group);
+                SelectedObjectList.AddLast(Group);
             }
             else if (e.Control && e.KeyCode == Keys.U) // ungroup
             {
                 foreach (DrawingObject obj in SelectedObjectList)
                 {
-                    if (obj.isComposite())
+                    if (obj.IsComposite())
                     {
                         canvas.RemoveDrawingObject(obj);
-                        canvas.AddObjectsToList(obj.GetObjectList());
+                        canvas.AddObjectsToListBack(obj.GetCompositeObjects());
                     }
                 }
                 canvas.DeselectAllObject();
@@ -133,15 +133,12 @@ namespace DrawingToolkit
             else if (e.Control && e.KeyCode == Keys.L) //last
             {
                 canvas.RemoveObjectsFromList(SelectedObjectList);
-                canvas.AddObjectsToList(SelectedObjectList);
+                canvas.AddObjectsToListBack(SelectedObjectList);
             }
             else if (e.Control && e.KeyCode == Keys.F) // first
             {
                 canvas.RemoveObjectsFromList(SelectedObjectList);
-                List<DrawingObject> OriginalList = canvas.GetObjectList();
-                canvas.ClearObjectList();
-                canvas.AddObjectsToList(SelectedObjectList);
-                canvas.AddObjectsToList(OriginalList);
+                canvas.AddObjectsToListFirst(SelectedObjectList);
             }
             else if (e.Control && e.KeyCode == Keys.S) // show
             {

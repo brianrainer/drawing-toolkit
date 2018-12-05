@@ -9,6 +9,6 @@ namespace DrawingToolkit
 {
     interface IObserver
     {
-        void Update(Point updatedPoint, int xAmount, int yAmount);
+        void UpdateObserver(DrawingObject sender, int xAmount, int yAmount);
     }
 }

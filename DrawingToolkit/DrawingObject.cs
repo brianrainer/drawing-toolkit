@@ -10,68 +10,85 @@ namespace DrawingToolkit
 {
     public abstract class DrawingObject : IObserver, IObservable
     {
+        private Graphics G;
+
         protected const Double EPSILON = 3.0;
+        protected DrawingState State;
+        private Pen P;
+        private Brush B;
+
+        public string Name { get; set; }
         public Guid ID { get; set; }
-        protected DrawingState state;
-        private Graphics graphics;
-        public Pen Pen { get; set; }
-        public Brush Brush { get; set; }
-        public Point CenterPoint { get; set; }
-        public List<DrawingObject> Observers { get; set; }
+
+        private LinkedList<DrawingObject> CompositeObjects;
+        private LinkedList<Tuple<Point, DrawingObject>> Observers;
 
         public DrawingObject()
         {
             ID = Guid.NewGuid();
             ChangeState(PreviewState.GetInstance());
+            CompositeObjects = new LinkedList<DrawingObject>();
+            Observers = new LinkedList<Tuple<Point, DrawingObject>>();
         }
 
         public abstract bool Intersect(Point testPoint);
         public abstract void Translate(int xAmount, int yAmount);
 
-        public virtual void SetPenStyle(Color color, float width, DashStyle dashStyle)
+        public virtual void SetPen(Color color, float width, DashStyle dashStyle)
         {
-            Pen = new Pen(color, width)
+            P = new Pen(color, width)
             {
                 DashStyle = dashStyle
             };
         }
 
+        public virtual Pen GetPen()
+        {
+            return P;
+        }
+
         public virtual void SetBrushStyle(Color color)
         {
-            Brush = new SolidBrush(color);
+            B = new SolidBrush(color);
+        }
+
+        public virtual Brush GetBrush()
+        {
+            return B;
         }
 
         public virtual void Draw()
         {
-            this.state.Draw(this);
+            State.Draw(this);
         }
 
         public virtual void Render()
         {
+            // default no render
         }
 
 
         public virtual void SetGraphics(Graphics graphics)
         {
-            this.graphics = graphics;
+            G = graphics;
         }
 
         public virtual Graphics GetGraphics()
         {
-            return this.graphics;
+            return G;
         }
 
         public virtual void ChangeState(DrawingState state)
         {
-            this.state = state;
+            State = state;
         }
 
-        public virtual bool isSelected()
+        public virtual bool IsSelected()
         {
-            return state == EditState.GetInstance();
+            return State == EditState.GetInstance();
         }
 
-        protected virtual bool isNear(Point a, Point b)
+        protected virtual bool IsNear(Point a, Point b)
         {
             if (Math.Abs(a.X-b.X)<=EPSILON && Math.Abs(a.Y - b.Y) <= EPSILON)
             {
@@ -82,46 +99,60 @@ namespace DrawingToolkit
 
         public virtual void Select()
         {
-            this.state.Select(this);
+            State.Select(this);
         }
 
         public virtual void Deselect()
         {
-            this.state.Deselect(this);
+            State.Deselect(this);
         }
 
-        public virtual bool isComposite()
+        public virtual bool IsComposite()
         {
-            return false; // default
+            return false; // default is non composite
         }
 
-        public virtual void Add(DrawingObject drawingObject)
+        public virtual void AddComposite(DrawingObject drawingObject)
         {
+            CompositeObjects.AddLast(drawingObject);
         }
 
-        public virtual void Remove(DrawingObject drawingObject)
+        public virtual void RemoveComposite(DrawingObject drawingObject)
         {
+            CompositeObjects.Remove(drawingObject);
         }
 
-        public virtual List<DrawingObject> GetObjectList()
+        public virtual LinkedList<DrawingObject> GetCompositeObjects()
         {
-            return new List<DrawingObject>();
+            return CompositeObjects;
         }
 
-        public virtual void Update(Point updatedPoint, int xAmount, int yAmount)
+        public virtual LinkedList<Tuple<Point,DrawingObject>> GetObserverList()
         {
+            return Observers;
+        }
+
+        public virtual void UpdateObserver(DrawingObject sender, int xAmount, int yAmount)
+        {
+            this.Translate(xAmount, yAmount); // default implementation for observable
         }
 
         public virtual void OnChange(int xAmount, int yAmount)
         {
+            foreach (Tuple<Point, DrawingObject> tupl in GetObserverList())
+            {
+                tupl.Item2.UpdateObserver(this, xAmount, yAmount);
+            }
         }
 
-        public virtual void AddObserver(DrawingObject observer)
+        public virtual void AddObserver(DrawingObject observer, Point contactPoint)
         {
+            Observers.AddLast(new Tuple<Point, DrawingObject>(contactPoint, observer));
         }
 
-        public virtual void RemoveObserver(DrawingObject observer)
+        public virtual void RemoveObserver(Tuple<Point, DrawingObject> Object)
         {
+            Observers.Remove(Object);
         }
     }
 }

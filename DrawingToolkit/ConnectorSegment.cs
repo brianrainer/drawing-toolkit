@@ -14,7 +14,6 @@ namespace DrawingToolkit
 
         public ConnectorSegment()
         {
-            Observers = new List<DrawingObject>();
         }
 
         public ConnectorSegment(Point startpoint) : this()
@@ -25,32 +24,48 @@ namespace DrawingToolkit
         public ConnectorSegment(Point startpoint, Point endpoint) : this(startpoint)
         {
             EndPoint = endpoint;
-            CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y)/2);
         }
 
         public override void Render()
         {
             if (GetGraphics() != null)
             {
-                GetGraphics().DrawLine(Pen, StartPoint, EndPoint);
+                GetGraphics().DrawLine(this.GetPen(), StartPoint, EndPoint);
             }
         }
 
         public override bool Intersect(Point testPoint)
         {
-            double slope = GetSlope();
-            double shift = EndPoint.Y - slope * EndPoint.X;
-            double y_line = slope * testPoint.X + shift;
+            bool IsInsideBound =
+                testPoint.X <= Math.Max(StartPoint.X, EndPoint.X) &&
+                testPoint.X >= Math.Min(StartPoint.X, EndPoint.X) &&
+                testPoint.Y <= Math.Max(StartPoint.Y, EndPoint.Y) &&
+                testPoint.Y >= Math.Min(StartPoint.Y, EndPoint.Y);
 
-            if (Math.Abs(y_line - testPoint.Y) < EPSILON)
+            if (IsInsideBound)
             {
-                return true;
+                double slope = GetSlope();
+                if (slope == 1000000000 || slope == 0)
+                {
+                    return true;
+                }
+
+                double shift = EndPoint.Y - slope * EndPoint.X;
+                double y_line = slope * testPoint.X + shift;
+                if (Math.Abs(y_line - testPoint.Y) < EPSILON)
+                {
+                    return true;
+                }
             }
             return false;
         }
 
         public double GetSlope()
         {
+            if (Math.Abs(EndPoint.X-StartPoint.X) == 0)
+            {
+                return 1000000000;
+            }
             return (EndPoint.Y - StartPoint.Y) / (double)(EndPoint.X - StartPoint.X);
         }
 
@@ -59,39 +74,48 @@ namespace DrawingToolkit
             // do nothing
         }
 
-        public override void Update(Point updatedPoint, int xAmount, int yAmount)
+        public override void UpdateObserver(DrawingObject sender, int xAmount, int yAmount)
         {
-            if (isNear(StartPoint,updatedPoint))
+            LinkedList<Tuple<Point, DrawingObject>> TmpRemove = new LinkedList<Tuple<Point, DrawingObject>>();
+            LinkedList<Tuple<Point, DrawingObject>> TmpAdd = new LinkedList<Tuple<Point, DrawingObject>>();
+
+            foreach (Tuple<Point, DrawingObject> tupl in GetObserverList())
             {
-                StartPoint = new Point(StartPoint.X + xAmount, StartPoint.Y + yAmount);
-                CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
+                Point contactPoint = tupl.Item1;
+                DrawingObject obj = tupl.Item2;
+                if (obj == sender)
+                {
+                    if (IsNear(contactPoint, StartPoint))
+                    {
+                        StartPoint = new Point(StartPoint.X + xAmount, StartPoint.Y + yAmount);
+                        contactPoint = StartPoint;
+                    }
+                    else if (IsNear(contactPoint, EndPoint))
+                    {
+                        EndPoint = new Point(EndPoint.X + xAmount, EndPoint.Y + yAmount);
+                        contactPoint = EndPoint;
+                    }
+                    else
+                    {
+                        // calculate angle, scale, then move point start or end to respective point
+                    }
+                    TmpRemove.AddLast(tupl);
+                    TmpAdd.AddLast(new Tuple<Point, DrawingObject>(contactPoint, obj));
+                }
             }
-            if (isNear(EndPoint, updatedPoint))
+            foreach (Tuple<Point, DrawingObject> tupl in TmpRemove)
             {
-                EndPoint = new Point(EndPoint.X + xAmount, EndPoint.Y + yAmount);
-                CenterPoint = new Point((StartPoint.X + EndPoint.X) / 2, (StartPoint.Y + EndPoint.Y) / 2);
+                RemoveObserver(tupl);
+            }
+            foreach (Tuple<Point, DrawingObject> tupl in TmpAdd)
+            {
+                AddObserver(tupl.Item2, tupl.Item1);
             }
         }
 
         public override void OnChange(int xAmount, int yAmount)
         {
-            foreach (DrawingObject observer in Observers)
-            {
-                observer.Update(StartPoint, xAmount, yAmount);
-                observer.Update(EndPoint, xAmount, yAmount);
-                observer.Update(CenterPoint, xAmount, yAmount);
-            }
+            // do nothing
         }
-
-        public override void AddObserver(DrawingObject observer)
-        {
-            Observers.Add(observer);
-        }
-
-        public override void RemoveObserver(DrawingObject observer)
-        {
-            Observers.Remove(observer);
-        }
-
     }
 }
