@@ -14,6 +14,7 @@ namespace DrawingToolkit
         void SetActiveTool(ITool tool);
 
         void AddDrawingObject(DrawingObject drawingObject);
+        void AddDrawingObjectAtIndex(int index, DrawingObject drawingObject);
         void AddObjectsToListBack(List<DrawingObject> drawingObjectList);
         void AddObjectsToListFirst(List<DrawingObject> drawingObjectList);
         void RemoveDrawingObject(DrawingObject drawingObject);

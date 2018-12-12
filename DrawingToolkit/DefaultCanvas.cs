@@ -124,6 +124,32 @@ namespace DrawingToolkit
         {
             this.DrawingObjectList.Add(drawingObject);
             this.Repaint();
+            this.UpdateListIndex();
+        }
+
+        public void AddDrawingObjectAtIndex(int index, DrawingObject drawingObject)
+        {
+            if (index < 0)
+            {
+                List<DrawingObject> tmpList = new List<DrawingObject>();
+                tmpList.Add(drawingObject);
+                foreach (DrawingObject obj in DrawingObjectList)
+                {
+                    tmpList.Add(obj);
+                }
+                DrawingObjectList = new List<DrawingObject>(tmpList);
+            }
+            else if (index >= DrawingObjectList.Count)
+            {
+                List<DrawingObject> tmpList = new List<DrawingObject>(DrawingObjectList);
+                tmpList.Add(drawingObject);
+                DrawingObjectList = new List<DrawingObject>(tmpList);
+            }
+            else
+            {
+                this.DrawingObjectList.Insert(index, drawingObject);
+            }
+            this.Repaint();
         }
 
         public void AddObjectsToListBack(List<DrawingObject> drawingObjectList)

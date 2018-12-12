@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -112,6 +113,7 @@ namespace DrawingToolkit
                 canvas.RemoveObjectsFromList(SelectedObjectList);
                 SelectedObjectList.Clear();
                 SelectedObjectList.Add(Group);
+                canvas.UpdateListIndex();
             }
             else if (e.Control && e.KeyCode == Keys.U) // ungroup
             {
@@ -124,16 +126,42 @@ namespace DrawingToolkit
                     }
                 }
                 canvas.DeselectAllObject();
+                canvas.UpdateListIndex();
                 SelectedObject = null;
                 SelectedObjectList.Clear();
             }
             else if (e.Control && e.KeyCode == Keys.N) // next
             {
+                canvas.UpdateListIndex();
+                List<int> IndexList = new List<int>();
+                foreach (DrawingObject obj in SelectedObjectList)
+                {
+                    IndexList.Add(obj.Index);
+                }
 
+                canvas.RemoveObjectsFromList(SelectedObjectList);
+                for(int i=0;i<SelectedObjectList.Count;i++)
+                {
+                    canvas.AddDrawingObjectAtIndex(IndexList[i]+1, SelectedObjectList[i]);
+                }
+                canvas.UpdateListIndex();
             }
             else if (e.Control && e.KeyCode == Keys.P) // prev
             {
+                canvas.UpdateListIndex();
+                List<int> IndexList = new List<int>();
+                foreach (DrawingObject obj in SelectedObjectList)
+                {
+                    IndexList.Add(obj.Index);
+                }
 
+                canvas.RemoveObjectsFromList(SelectedObjectList);
+                for (int i = 0; i < SelectedObjectList.Count; i++)
+                {
+                    canvas.AddDrawingObjectAtIndex(IndexList[i]-1, SelectedObjectList[i]);
+                }
+
+                canvas.UpdateListIndex();
             }
             else if (e.Control && e.KeyCode == Keys.L) //last
             {
@@ -147,11 +175,17 @@ namespace DrawingToolkit
             }
             else if (e.Control && e.KeyCode == Keys.S) // show
             {
-
+                foreach (DrawingObject obj in SelectedObjectList)
+                {
+                    obj.Show = true;
+                }
             }
             else if (e.Control && e.KeyCode == Keys.H) // hide
             {
-
+                foreach (DrawingObject obj in SelectedObjectList)
+                {
+                    obj.Show = false;
+                }
             }
         }
 

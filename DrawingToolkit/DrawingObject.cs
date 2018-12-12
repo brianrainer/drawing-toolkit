@@ -20,6 +20,7 @@ namespace DrawingToolkit
         public string Name { get; set; }
         public Guid ID { get; set; }
         public int Index { get; set; }
+        public bool Show { get; set; }
 
         private List<DrawingObject> CompositeObjects;
         private List<Tuple<Point, DrawingObject>> Observers;
@@ -30,6 +31,7 @@ namespace DrawingToolkit
             ChangeState(PreviewState.GetInstance());
             CompositeObjects = new List<DrawingObject>();
             Observers = new List<Tuple<Point, DrawingObject>>();
+            Show = true;
         }
 
         public abstract bool Intersect(Point testPoint);
@@ -60,7 +62,10 @@ namespace DrawingToolkit
 
         public virtual void Draw()
         {
-            State.Draw(this);
+            if (Show)
+            {
+                State.Draw(this);
+            }
         }
 
         public virtual void Render()
