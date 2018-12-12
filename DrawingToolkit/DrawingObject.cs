@@ -19,16 +19,17 @@ namespace DrawingToolkit
 
         public string Name { get; set; }
         public Guid ID { get; set; }
+        public int Index { get; set; }
 
-        private LinkedList<DrawingObject> CompositeObjects;
-        private LinkedList<Tuple<Point, DrawingObject>> Observers;
+        private List<DrawingObject> CompositeObjects;
+        private List<Tuple<Point, DrawingObject>> Observers;
 
         public DrawingObject()
         {
             ID = Guid.NewGuid();
             ChangeState(PreviewState.GetInstance());
-            CompositeObjects = new LinkedList<DrawingObject>();
-            Observers = new LinkedList<Tuple<Point, DrawingObject>>();
+            CompositeObjects = new List<DrawingObject>();
+            Observers = new List<Tuple<Point, DrawingObject>>();
         }
 
         public abstract bool Intersect(Point testPoint);
@@ -114,7 +115,7 @@ namespace DrawingToolkit
 
         public virtual void AddComposite(DrawingObject drawingObject)
         {
-            CompositeObjects.AddLast(drawingObject);
+            CompositeObjects.Add(drawingObject);
         }
 
         public virtual void RemoveComposite(DrawingObject drawingObject)
@@ -122,12 +123,12 @@ namespace DrawingToolkit
             CompositeObjects.Remove(drawingObject);
         }
 
-        public virtual LinkedList<DrawingObject> GetCompositeObjects()
+        public virtual List<DrawingObject> GetCompositeObjects()
         {
             return CompositeObjects;
         }
 
-        public virtual LinkedList<Tuple<Point,DrawingObject>> GetObserverList()
+        public virtual List<Tuple<Point,DrawingObject>> GetObserverList()
         {
             return Observers;
         }
@@ -147,7 +148,7 @@ namespace DrawingToolkit
 
         public virtual void AddObserver(DrawingObject observer, Point contactPoint)
         {
-            Observers.AddLast(new Tuple<Point, DrawingObject>(contactPoint, observer));
+            Observers.Add(new Tuple<Point, DrawingObject>(contactPoint, observer));
         }
 
         public virtual void RemoveObserver(Tuple<Point, DrawingObject> Object)

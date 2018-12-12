@@ -14,17 +14,18 @@ namespace DrawingToolkit
         void SetActiveTool(ITool tool);
 
         void AddDrawingObject(DrawingObject drawingObject);
-        void AddObjectsToListBack(LinkedList<DrawingObject> drawingObjectList);
-        void AddObjectsToListFirst(LinkedList<DrawingObject> drawingObjectList);
+        void AddObjectsToListBack(List<DrawingObject> drawingObjectList);
+        void AddObjectsToListFirst(List<DrawingObject> drawingObjectList);
         void RemoveDrawingObject(DrawingObject drawingObject);
-        void RemoveObjectsFromList(LinkedList<DrawingObject> drawingObjectList);
+        void RemoveObjectsFromList(List<DrawingObject> drawingObjectList);
         void ClearObjectList();
+        void UpdateListIndex();
 
         DrawingObject GetObjectAt(Point e);
-        LinkedList<DrawingObject> GetObjectList();
+        List<DrawingObject> GetObjectList();
 
         DrawingObject SelectObjectAt(Point e);
-        LinkedList<DrawingObject> SelectAllObject();
+        List<DrawingObject> SelectAllObject();
 
         void DeselectObjectAt(Point e);
         void DeselectAllObject();

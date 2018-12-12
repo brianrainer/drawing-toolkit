@@ -14,7 +14,7 @@ namespace DrawingToolkit
         private DrawingObject SelectedObject;
         private Point StartPoint;
         
-        private LinkedList<DrawingObject> SelectedObjectList;
+        private List<DrawingObject> SelectedObjectList;
 
         public SelectionTool()
         {
@@ -22,7 +22,7 @@ namespace DrawingToolkit
             this.ToolTipText = "Selection Tool";
             this.Text = "Select";
             this.CheckOnClick = true;
-            this.SelectedObjectList = new LinkedList<DrawingObject>();
+            this.SelectedObjectList = new List<DrawingObject>();
         }
 
         public Cursor cursor => Cursors.Arrow;
@@ -37,6 +37,11 @@ namespace DrawingToolkit
         private void SetCanvas(ICanvas value)
         {
             this.canvas = value;
+        }
+
+        private void UpdateList()
+        {
+            SelectedObjectList.OrderBy(o => o.Index).ToList();
         }
 
         public void ToolMouseClick(object sender, MouseEventArgs e)
@@ -67,7 +72,7 @@ namespace DrawingToolkit
                     if (!SelectedObject.IsSelected())
                     {
                         canvas.SelectObjectAt(StartPoint);
-                        SelectedObjectList.AddLast(SelectedObject);
+                        SelectedObjectList.Add(SelectedObject);
                     }
                     else
                     {
@@ -106,7 +111,7 @@ namespace DrawingToolkit
                 canvas.AddDrawingObject(Group);
                 canvas.RemoveObjectsFromList(SelectedObjectList);
                 SelectedObjectList.Clear();
-                SelectedObjectList.AddLast(Group);
+                SelectedObjectList.Add(Group);
             }
             else if (e.Control && e.KeyCode == Keys.U) // ungroup
             {

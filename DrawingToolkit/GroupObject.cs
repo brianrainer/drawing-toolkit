@@ -9,7 +9,7 @@ namespace DrawingToolkit
 {
     public class GroupObject : DrawingObject
     {
-        public GroupObject(LinkedList<DrawingObject> drawingObjects)
+        public GroupObject(List<DrawingObject> drawingObjects)
         {
             foreach (DrawingObject obj in drawingObjects)
             {

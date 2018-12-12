@@ -76,8 +76,8 @@ namespace DrawingToolkit
 
         public override void UpdateObserver(DrawingObject sender, int xAmount, int yAmount)
         {
-            LinkedList<Tuple<Point, DrawingObject>> TmpRemove = new LinkedList<Tuple<Point, DrawingObject>>();
-            LinkedList<Tuple<Point, DrawingObject>> TmpAdd = new LinkedList<Tuple<Point, DrawingObject>>();
+            List<Tuple<Point, DrawingObject>> TmpRemove = new List<Tuple<Point, DrawingObject>>();
+            List<Tuple<Point, DrawingObject>> TmpAdd = new List<Tuple<Point, DrawingObject>>();
 
             foreach (Tuple<Point, DrawingObject> tupl in GetObserverList())
             {
@@ -99,8 +99,8 @@ namespace DrawingToolkit
                     {
                         // calculate angle, scale, then move point start or end to respective point
                     }
-                    TmpRemove.AddLast(tupl);
-                    TmpAdd.AddLast(new Tuple<Point, DrawingObject>(contactPoint, obj));
+                    TmpRemove.Add(tupl);
+                    TmpAdd.Add(new Tuple<Point, DrawingObject>(contactPoint, obj));
                 }
             }
             foreach (Tuple<Point, DrawingObject> tupl in TmpRemove)

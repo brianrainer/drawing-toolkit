@@ -11,11 +11,11 @@ namespace DrawingToolkit
     public class DefaultCanvas : Control, ICanvas
     {
         private ITool currentActiveTool;
-        private LinkedList<DrawingObject> DrawingObjectList;
+        private List<DrawingObject> DrawingObjectList;
 
         public DefaultCanvas()
         {
-            this.DrawingObjectList = new LinkedList<DrawingObject>();
+            this.DrawingObjectList = new List<DrawingObject>();
 
             this.DoubleBuffered = true;
             this.BackColor = System.Drawing.Color.White;
@@ -122,26 +122,28 @@ namespace DrawingToolkit
 
         public void AddDrawingObject(DrawingObject drawingObject)
         {
-            this.DrawingObjectList.AddLast(drawingObject);
+            this.DrawingObjectList.Add(drawingObject);
             this.Repaint();
         }
 
-        public void AddObjectsToListBack(LinkedList<DrawingObject> drawingObjectList)
+        public void AddObjectsToListBack(List<DrawingObject> drawingObjectList)
         {
             foreach (DrawingObject obj in drawingObjectList)
             {
-                this.DrawingObjectList.AddLast(obj);
+                this.DrawingObjectList.Add(obj);
                 this.Repaint();
             }
         }
 
-        public void AddObjectsToListFirst(LinkedList<DrawingObject> drawingObjectList)
+        public void AddObjectsToListFirst(List<DrawingObject> drawingObjectList)
         {
-            foreach (DrawingObject obj in drawingObjectList.Reverse())
+            List<DrawingObject> tmpList = new List<DrawingObject>(drawingObjectList);
+            foreach (DrawingObject obj in DrawingObjectList)
             {
-                this.DrawingObjectList.AddFirst(obj);
-                this.Repaint();
+                tmpList.Add(obj);
             }
+            DrawingObjectList = new List<DrawingObject>(tmpList);
+            this.Repaint();
         }
 
         public void RemoveDrawingObject(DrawingObject drawingObject)
@@ -150,7 +152,7 @@ namespace DrawingToolkit
             this.Repaint();
         }
 
-        public void RemoveObjectsFromList(LinkedList<DrawingObject> drawingObjectList)
+        public void RemoveObjectsFromList(List<DrawingObject> drawingObjectList)
         {
             foreach(DrawingObject obj in drawingObjectList)
             {
@@ -166,8 +168,9 @@ namespace DrawingToolkit
 
         public DrawingObject GetObjectAt(Point e)
         {
-            foreach (DrawingObject drawingObject in DrawingObjectList.Reverse())
+            for(int i=DrawingObjectList.Count-1; i>=0; i--)
             {
+                DrawingObject drawingObject = DrawingObjectList[i];
                 if (drawingObject.Intersect(e))
                 {
                     return drawingObject;
@@ -176,7 +179,7 @@ namespace DrawingToolkit
             return null;
         }
 
-        public LinkedList<DrawingObject> GetObjectList()
+        public List<DrawingObject> GetObjectList()
         {
             return DrawingObjectList;
         }
@@ -191,7 +194,7 @@ namespace DrawingToolkit
             return drawingObject;
         }
 
-        public LinkedList<DrawingObject> SelectAllObject()
+        public List<DrawingObject> SelectAllObject()
         {
             foreach (DrawingObject obj in DrawingObjectList)
             {
@@ -214,6 +217,14 @@ namespace DrawingToolkit
             foreach (DrawingObject drawingObject in DrawingObjectList)
             {
                 drawingObject.Deselect();
+            }
+        }
+
+        public void UpdateListIndex()
+        {
+            for(int i=0;i<DrawingObjectList.Count; i++)
+            {
+                DrawingObjectList[i].Index = i;
             }
         }
     }
