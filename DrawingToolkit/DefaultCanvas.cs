@@ -141,9 +141,7 @@ namespace DrawingToolkit
             }
             else if (index >= DrawingObjectList.Count)
             {
-                List<DrawingObject> tmpList = new List<DrawingObject>(DrawingObjectList);
-                tmpList.Add(drawingObject);
-                DrawingObjectList = new List<DrawingObject>(tmpList);
+                this.DrawingObjectList.Add(drawingObject);
             }
             else
             {

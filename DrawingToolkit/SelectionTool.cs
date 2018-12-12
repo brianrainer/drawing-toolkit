@@ -42,7 +42,7 @@ namespace DrawingToolkit
 
         private void UpdateList()
         {
-            SelectedObjectList.OrderBy(o => o.Index).ToList();
+            SelectedObjectList = SelectedObjectList.OrderBy(o => o.Index).ToList();
         }
 
         public void ToolMouseClick(object sender, MouseEventArgs e)
@@ -133,6 +133,8 @@ namespace DrawingToolkit
             else if (e.Control && e.KeyCode == Keys.N) // next
             {
                 canvas.UpdateListIndex();
+                this.UpdateList();
+
                 List<int> IndexList = new List<int>();
                 foreach (DrawingObject obj in SelectedObjectList)
                 {
@@ -140,7 +142,7 @@ namespace DrawingToolkit
                 }
 
                 canvas.RemoveObjectsFromList(SelectedObjectList);
-                for(int i=0;i<SelectedObjectList.Count;i++)
+                for (int i=0; i<SelectedObjectList.Count; i++)
                 {
                     canvas.AddDrawingObjectAtIndex(IndexList[i]+1, SelectedObjectList[i]);
                 }
@@ -149,6 +151,8 @@ namespace DrawingToolkit
             else if (e.Control && e.KeyCode == Keys.P) // prev
             {
                 canvas.UpdateListIndex();
+                this.UpdateList();
+
                 List<int> IndexList = new List<int>();
                 foreach (DrawingObject obj in SelectedObjectList)
                 {
@@ -156,7 +160,7 @@ namespace DrawingToolkit
                 }
 
                 canvas.RemoveObjectsFromList(SelectedObjectList);
-                for (int i = 0; i < SelectedObjectList.Count; i++)
+                for (int i=0; i<SelectedObjectList.Count; i++)
                 {
                     canvas.AddDrawingObjectAtIndex(IndexList[i]-1, SelectedObjectList[i]);
                 }
@@ -165,13 +169,19 @@ namespace DrawingToolkit
             }
             else if (e.Control && e.KeyCode == Keys.L) //last
             {
+                canvas.UpdateListIndex();
+                this.UpdateList();
                 canvas.RemoveObjectsFromList(SelectedObjectList);
                 canvas.AddObjectsToListBack(SelectedObjectList);
+                canvas.UpdateListIndex();
             }
             else if (e.Control && e.KeyCode == Keys.F) // first
             {
+                canvas.UpdateListIndex();
+                this.UpdateList();
                 canvas.RemoveObjectsFromList(SelectedObjectList);
                 canvas.AddObjectsToListFirst(SelectedObjectList);
+                canvas.UpdateListIndex();
             }
             else if (e.Control && e.KeyCode == Keys.S) // show
             {
