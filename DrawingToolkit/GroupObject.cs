@@ -93,5 +93,20 @@ namespace DrawingToolkit
                 }
             }
         }
+
+        public override bool IsSelected()
+        {
+            if (GetCompositeObjects().Count > 0)
+            {
+                foreach (DrawingObject obj in GetCompositeObjects())
+                {
+                    if (obj.IsSelected())
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
