@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace DrawingToolkit
     {
         private ITool currentActiveTool;
         private List<DrawingObject> DrawingObjectList;
+        public TextBox TextBox { get; set; }
 
         public DefaultCanvas()
         {
@@ -30,6 +32,26 @@ namespace DrawingToolkit
 
             this.KeyDown += DefaultCanvas_KeyDown;
             this.KeyUp += DefaultCanvas_KeyUp;
+        }
+
+        public void RefreshTextBox()
+        {
+            if (this.TextBox == null)
+            {
+                this.TextBox = new TextBox()
+                {
+                    Multiline = true,
+                    ReadOnly = true
+                };
+            }
+            
+            this.TextBox.Text = "Drawing Object List\n\n";
+            foreach (DrawingObject obj in DrawingObjectList)
+            {
+                this.TextBox.AppendText(obj.Index + " " + obj.Name + "\n\n");
+            }
+
+            this.TextBox.Refresh();
         }
 
         private void DefaultCanvas_Paint(object sender, PaintEventArgs e)
@@ -250,6 +272,8 @@ namespace DrawingToolkit
             {
                 DrawingObjectList[i].Index = i;
             }
+
+            this.RefreshTextBox();
         }
     }
 }

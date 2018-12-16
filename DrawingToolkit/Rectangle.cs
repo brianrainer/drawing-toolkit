@@ -15,6 +15,7 @@ namespace DrawingToolkit
 
         public Rectangle()
         {
+            this.Name = "Rectangle";
         }
 
         public Rectangle(Point StartPoint) : this()

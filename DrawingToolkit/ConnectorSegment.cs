@@ -14,6 +14,7 @@ namespace DrawingToolkit
 
         public ConnectorSegment()
         {
+            this.Name = "Connector";
         }
 
         public ConnectorSegment(Point startpoint) : this()

@@ -42,6 +42,13 @@ namespace DrawingToolkit
             this.toolbox.AddTool(new ConnectorTool());
             this.toolbox.ToolSelected += toolBox_ToolSelected;
             #endregion
+
+            #region textbox
+            this.textBox1.Multiline = true;
+            this.textBox1.ReadOnly = true;
+            this.textBox1.TabStop = false;
+            this.canvas.TextBox = this.textBox1;
+            #endregion
         }
 
         private void toolBox_ToolSelected(ITool tool)

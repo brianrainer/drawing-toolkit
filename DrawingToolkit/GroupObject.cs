@@ -9,7 +9,12 @@ namespace DrawingToolkit
 {
     public class GroupObject : DrawingObject
     {
-        public GroupObject(List<DrawingObject> drawingObjects)
+        public GroupObject()
+        {
+            this.Name = "Group";
+        }
+
+        public GroupObject(List<DrawingObject> drawingObjects) : this()
         {
             foreach (DrawingObject obj in drawingObjects)
             {

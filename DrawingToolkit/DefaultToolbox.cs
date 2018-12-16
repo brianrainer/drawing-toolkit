@@ -9,9 +9,7 @@ namespace DrawingToolkit
 {
     public class DefaultToolbox : ToolStrip, IToolbox
     {
-        private ITool currentActiveTool;
-
-        public ITool CurrentActiveTool { get => this.currentActiveTool; set => this.currentActiveTool = value; }
+        public ITool CurrentActiveTool { get; set; }
 
         public event ToolSelectedEventHandler ToolSelected;
 
@@ -58,10 +56,10 @@ namespace DrawingToolkit
                 {
                     if (button is ITool)
                     {
-                        this.currentActiveTool = (ITool)button;
+                        this.CurrentActiveTool = (ITool)button;
                         if (ToolSelected != null)
                         {
-                            ToolSelected(this.currentActiveTool);
+                            ToolSelected(this.CurrentActiveTool);
                         }
                         UncheckInactiveToggleButtons();
                     }
@@ -73,7 +71,7 @@ namespace DrawingToolkit
         {
             foreach(ToolStripItem item in this.Items)
             {
-                if (item != this.currentActiveTool)
+                if (item != this.CurrentActiveTool)
                 {
                     if (item is ToolStripButton)
                     {

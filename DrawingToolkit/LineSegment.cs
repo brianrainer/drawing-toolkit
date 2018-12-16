@@ -15,6 +15,7 @@ namespace DrawingToolkit
 
         public LineSegment()
         {
+            this.Name = "Line";
         }
 
         public LineSegment(Point startpoint) : this()

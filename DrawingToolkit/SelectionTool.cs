@@ -106,6 +106,8 @@ namespace DrawingToolkit
         
         public void ToolKeyDown(object sender, KeyEventArgs e)
         {
+            Debug.WriteLine("Control:" + e.Control);
+            Debug.WriteLine("Key:" + e.KeyCode);
             if (e.Control && e.KeyCode == Keys.G) // group
             {
                 DrawingObject Group = new GroupObject(SelectedObjectList);

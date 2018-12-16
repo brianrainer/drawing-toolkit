@@ -14,6 +14,7 @@ namespace DrawingToolkit
 
         public Circle()
         {
+            this.Name = "Circle";
             Radius = 0;
         }
 

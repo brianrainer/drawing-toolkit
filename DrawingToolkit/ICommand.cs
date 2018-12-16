@@ -9,6 +9,5 @@ namespace DrawingToolkit
     public interface ICommand
     {
         void Execute();
-        void Unexecute();
     }
 }

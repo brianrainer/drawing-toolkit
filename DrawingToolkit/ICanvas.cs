@@ -4,12 +4,15 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DrawingToolkit
 {
     public interface ICanvas
     {
         String Name { get; set; }
+        TextBox TextBox { get; set; }
+
         ITool GetActiveTool();
         void SetActiveTool(ITool tool);
 
@@ -32,5 +35,7 @@ namespace DrawingToolkit
         void DeselectAllObject();
 
         void Repaint();
+
+        void RefreshTextBox();
     }
 }
