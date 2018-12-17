@@ -106,36 +106,25 @@ namespace DrawingToolkit
         
         public void ToolKeyDown(object sender, KeyEventArgs e)
         {
-            Debug.WriteLine("Control:" + e.Control);
-            Debug.WriteLine("Key:" + e.KeyCode);
             if (e.Control && e.KeyCode == Keys.G) // group
             {
-                DrawingObject Group = new GroupObject(SelectedObjectList);
-                canvas.AddDrawingObject(Group);
-                canvas.RemoveObjectsFromList(SelectedObjectList);
-                SelectedObjectList.Clear();
-                SelectedObjectList.Add(Group);
-                canvas.UpdateListIndex();
+                UpdateList();
+                ICommand command = new GroupingCommand(canvas, SelectedObjectList);
+                canvas.UndoStack.Push(command);
+                canvas.RedoStack.Clear();
+                command.Execute();
             }
             else if (e.Control && e.KeyCode == Keys.U) // ungroup
             {
-                foreach (DrawingObject obj in SelectedObjectList)
-                {
-                    if (obj.IsComposite())
-                    {
-                        canvas.RemoveDrawingObject(obj);
-                        canvas.AddObjectsToListBack(obj.GetCompositeObjects());
-                    }
-                }
-                canvas.DeselectAllObject();
-                canvas.UpdateListIndex();
-                SelectedObject = null;
-                SelectedObjectList.Clear();
+                UpdateList();
+                ICommand command = new UngroupingCommand(canvas, SelectedObjectList);
+                canvas.UndoStack.Push(command);
+                canvas.RedoStack.Clear();
+                command.Execute();
             }
             else if (e.Control && e.KeyCode == Keys.N) // next
             {
-                canvas.UpdateListIndex();
-                this.UpdateList();
+                UpdateList();
 
                 List<int> IndexList = new List<int>();
                 foreach (DrawingObject obj in SelectedObjectList)
@@ -152,8 +141,7 @@ namespace DrawingToolkit
             }
             else if (e.Control && e.KeyCode == Keys.P) // prev
             {
-                canvas.UpdateListIndex();
-                this.UpdateList();
+                UpdateList();
 
                 List<int> IndexList = new List<int>();
                 foreach (DrawingObject obj in SelectedObjectList)
@@ -171,32 +159,41 @@ namespace DrawingToolkit
             }
             else if (e.Control && e.KeyCode == Keys.L) //last
             {
-                canvas.UpdateListIndex();
-                this.UpdateList();
+                UpdateList();
                 canvas.RemoveObjectsFromList(SelectedObjectList);
                 canvas.AddObjectsToListBack(SelectedObjectList);
                 canvas.UpdateListIndex();
             }
             else if (e.Control && e.KeyCode == Keys.F) // first
             {
-                canvas.UpdateListIndex();
-                this.UpdateList();
+                UpdateList();
                 canvas.RemoveObjectsFromList(SelectedObjectList);
                 canvas.AddObjectsToListFirst(SelectedObjectList);
                 canvas.UpdateListIndex();
             }
-            else if (e.Control && e.KeyCode == Keys.S) // show
+            else if (e.Control && e.KeyCode == Keys.D) // Delete
             {
-                foreach (DrawingObject obj in SelectedObjectList)
+                ICommand command = new HideCommand(canvas, SelectedObjectList);
+                canvas.UndoStack.Push(command);
+                canvas.RedoStack.Clear();
+                command.Execute();
+            }
+            else if (e.Control && e.KeyCode == Keys.Z) // undo
+            {
+                if (canvas.UndoStack.Count != 0)
                 {
-                    obj.Show = true;
+                    ICommand TopCommand = canvas.UndoStack.Pop();
+                    canvas.RedoStack.Push(TopCommand);
+                    TopCommand.Unexecute();
                 }
             }
-            else if (e.Control && e.KeyCode == Keys.H) // hide
+            else if (e.Control && e.KeyCode == Keys.Y) // redo
             {
-                foreach (DrawingObject obj in SelectedObjectList)
+                if (canvas.RedoStack.Count != 0)
                 {
-                    obj.Show = false;
+                    ICommand TopCommand = canvas.RedoStack.Pop();
+                    canvas.UndoStack.Push(TopCommand);
+                    TopCommand.Reexecute();
                 }
             }
         }

@@ -11,16 +11,16 @@ namespace DrawingToolkit
     public abstract class DrawingObject : IObserver, IObservable
     {
         private Graphics G;
+        private Pen P;
+        private Brush B;
+        private bool IsRendered;
 
         protected const Double EPSILON = 3.0;
         protected DrawingState State;
-        private Pen P;
-        private Brush B;
 
         public string Name { get; set; }
         public Guid ID { get; set; }
         public int Index { get; set; }
-        public bool Show { get; set; }
 
         private List<DrawingObject> CompositeObjects;
         private List<Tuple<Point, DrawingObject>> Observers;
@@ -31,11 +31,26 @@ namespace DrawingToolkit
             ChangeState(PreviewState.GetInstance());
             CompositeObjects = new List<DrawingObject>();
             Observers = new List<Tuple<Point, DrawingObject>>();
-            Show = true;
+            Show();
         }
 
         public abstract bool Intersect(Point testPoint);
         public abstract void Translate(int xAmount, int yAmount);
+
+        public virtual void Show()
+        {
+            IsRendered = true;
+        }
+
+        public virtual void Hide()
+        {
+            IsRendered = false;
+        }
+
+        public virtual bool IsShown()
+        {
+            return IsRendered;
+        }
 
         public virtual void SetPen(Color color, float width, DashStyle dashStyle)
         {
@@ -62,7 +77,7 @@ namespace DrawingToolkit
 
         public virtual void Draw()
         {
-            if (Show)
+            if (IsRendered)
             {
                 State.Draw(this);
             }

@@ -69,7 +69,9 @@
     <Compile Include="ExampleToolbarItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GroupingCommand.cs" />
     <Compile Include="GroupObject.cs" />
+    <Compile Include="HideCommand.cs" />
     <Compile Include="ICanvas.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="IObservable.cs" />
@@ -99,6 +101,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="StaticState.cs" />
+    <Compile Include="UngroupingCommand.cs" />
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>

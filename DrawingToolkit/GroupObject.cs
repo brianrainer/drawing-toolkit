@@ -27,6 +27,43 @@ namespace DrawingToolkit
             return true;
         }
 
+        public override void Show()
+        {
+            if (GetCompositeObjects() != null)
+            {
+                foreach (DrawingObject obj in GetCompositeObjects())
+                {
+                    obj.Show();
+                }
+            }
+        }
+
+        public override void Hide()
+        {
+            if (GetCompositeObjects() != null)
+            {
+                foreach (DrawingObject obj in GetCompositeObjects())
+                {
+                    obj.Hide();
+                }
+            }
+        }
+
+        public override bool IsShown()
+        {
+            if (GetCompositeObjects() != null)
+            {
+                foreach (DrawingObject obj in GetCompositeObjects())
+                {
+                    if (obj.IsShown())
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public override void ChangeState(DrawingState state)
         {
             if (GetCompositeObjects() != null)

@@ -12,6 +12,8 @@ namespace DrawingToolkit
     {
         String Name { get; set; }
         TextBox TextBox { get; set; }
+        Stack<ICommand> UndoStack { get; set; }
+        Stack<ICommand> RedoStack { get; set; }
 
         ITool GetActiveTool();
         void SetActiveTool(ITool tool);

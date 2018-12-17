@@ -14,10 +14,14 @@ namespace DrawingToolkit
         private ITool currentActiveTool;
         private List<DrawingObject> DrawingObjectList;
         public TextBox TextBox { get; set; }
+        public Stack<ICommand> UndoStack { get; set; }
+        public Stack<ICommand> RedoStack { get; set; }
 
         public DefaultCanvas()
         {
             this.DrawingObjectList = new List<DrawingObject>();
+            this.UndoStack = new Stack<ICommand>();
+            this.RedoStack = new Stack<ICommand>();
 
             this.DoubleBuffered = true;
             this.BackColor = System.Drawing.Color.White;
@@ -217,7 +221,7 @@ namespace DrawingToolkit
             for(int i=DrawingObjectList.Count-1; i>=0; i--)
             {
                 DrawingObject drawingObject = DrawingObjectList[i];
-                if (drawingObject.Intersect(e))
+                if (drawingObject.IsShown() &&  drawingObject.Intersect(e))
                 {
                     return drawingObject;
                 }
