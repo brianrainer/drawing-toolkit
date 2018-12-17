@@ -22,12 +22,8 @@ namespace DrawingToolkit
         public UngroupingCommand(ICanvas canvas) : this()
         {
             TargetCanvas = canvas;
+            selectedObjects = canvas.GetSelectedObject();
             previousObjects = new List<DrawingObject>(canvas.GetObjectList());
-        }
-
-        public UngroupingCommand(ICanvas canvas, List<DrawingObject> selected) : this(canvas)
-        {
-            selectedObjects = selected;
         }
 
         public void Execute()
@@ -44,6 +40,9 @@ namespace DrawingToolkit
             TargetCanvas.UpdateListIndex();
             selectedObjects.Clear();
             executedObjects = new List<DrawingObject>(TargetCanvas.GetObjectList());
+            TargetCanvas.UndoStack.Push(this);
+            TargetCanvas.RedoStack.Clear();
+
         }
 
         public void Unexecute()
@@ -51,6 +50,7 @@ namespace DrawingToolkit
             TargetCanvas.ClearObjectList();
             TargetCanvas.AddObjectsToListBack(this.previousObjects);
             TargetCanvas.UpdateListIndex();
+            TargetCanvas.RedoStack.Push(this);
         }
 
         public void Reexecute()
@@ -58,6 +58,7 @@ namespace DrawingToolkit
             TargetCanvas.ClearObjectList();
             TargetCanvas.AddObjectsToListBack(this.executedObjects);
             TargetCanvas.UpdateListIndex();
+            TargetCanvas.UndoStack.Push(this);
         }
     }
 }

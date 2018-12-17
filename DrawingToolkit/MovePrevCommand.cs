@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DrawingToolkit
 {
-    public class GroupingCommand : ICommand
+    public class MovePrevCommand : ICommand
     {
         public String Name { get; set; }
         public ICanvas TargetCanvas { get; set; }
@@ -14,30 +14,36 @@ namespace DrawingToolkit
         public List<DrawingObject> previousObjects { get; set; }
         public List<DrawingObject> executedObjects { get; set; }
 
-        public GroupingCommand()
+        public MovePrevCommand()
         {
-            this.Name = "Grouping Command";
+            this.Name = "Move Prev";
         }
 
-        public GroupingCommand(ICanvas canvas) : this()
+        public MovePrevCommand(ICanvas canvas): this()
         {
-            this.TargetCanvas = canvas;
-            this.selectedObjects = TargetCanvas.GetSelectedObject();
-            this.previousObjects = new List<DrawingObject>(TargetCanvas.GetObjectList());
+            TargetCanvas = canvas;
+            selectedObjects = canvas.GetSelectedObject();
+            previousObjects = new List<DrawingObject>(canvas.GetObjectList());
         }
 
         public void Execute()
         {
-            DrawingObject Group = new GroupObject(selectedObjects);
-            TargetCanvas.AddDrawingObject(Group);
+            List<int> IndexList = new List<int>();
+            foreach (DrawingObject obj in selectedObjects)
+            {
+                IndexList.Add(obj.Index);
+            }
+
             TargetCanvas.RemoveObjectsFromList(selectedObjects);
-            selectedObjects.Clear();
-            selectedObjects.Add(Group);
+            for (int i = 0; i < selectedObjects.Count; i++)
+            {
+                TargetCanvas.AddDrawingObjectAtIndex(IndexList[i] - 1, selectedObjects[i]);
+            }
+
             TargetCanvas.UpdateListIndex();
-            this.executedObjects = new List<DrawingObject>(TargetCanvas.GetObjectList());
+            executedObjects = new List<DrawingObject>(TargetCanvas.GetObjectList());
             TargetCanvas.UndoStack.Push(this);
             TargetCanvas.RedoStack.Clear();
-
         }
 
         public void Unexecute()

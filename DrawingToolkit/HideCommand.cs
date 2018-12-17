@@ -22,12 +22,8 @@ namespace DrawingToolkit
         public HideCommand(ICanvas canvas) : this()
         {
             TargetCanvas = canvas;
-        }
-
-        public HideCommand(ICanvas canvas, List<DrawingObject> selected) : this(canvas)
-        {
-            selectedObjects = selected;
-            executedObjects = new List<DrawingObject>(selected);
+            selectedObjects = canvas.GetSelectedObject();
+            executedObjects = new List<DrawingObject>(selectedObjects);
         }
 
         public void Execute()
@@ -37,6 +33,8 @@ namespace DrawingToolkit
                 obj.Hide();
             }
             selectedObjects.Clear();
+            TargetCanvas.UndoStack.Push(this);
+            TargetCanvas.RedoStack.Clear();
         }
 
         public void Reexecute()
@@ -45,6 +43,7 @@ namespace DrawingToolkit
             {
                 obj.Hide();
             }
+            TargetCanvas.UndoStack.Push(this);
         }
 
         public void Unexecute()
@@ -53,6 +52,7 @@ namespace DrawingToolkit
             {
                 obj.Show();
             }
+            TargetCanvas.RedoStack.Push(this);
         }
     }
 }

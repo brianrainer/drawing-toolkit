@@ -13,6 +13,9 @@ namespace DrawingToolkit
     {
         private ITool currentActiveTool;
         private List<DrawingObject> DrawingObjectList;
+        private List<DrawingObject> SelectedObjectList;
+        private ICommand command;
+
         public TextBox TextBox { get; set; }
         public Stack<ICommand> UndoStack { get; set; }
         public Stack<ICommand> RedoStack { get; set; }
@@ -20,6 +23,7 @@ namespace DrawingToolkit
         public DefaultCanvas()
         {
             this.DrawingObjectList = new List<DrawingObject>();
+            this.SelectedObjectList = new List<DrawingObject>();
             this.UndoStack = new Stack<ICommand>();
             this.RedoStack = new Stack<ICommand>();
 
@@ -114,9 +118,59 @@ namespace DrawingToolkit
 
         private void DefaultCanvas_KeyDown(object sender, KeyEventArgs e)
         {
-            if (this.currentActiveTool != null)
+            if (SelectedObjectList.Count != 0)
             {
-                this.currentActiveTool.ToolKeyDown(sender, e);
+                if (e.Control && e.KeyCode == Keys.G) // group
+                {
+                    command = new GroupingCommand(this);
+                    command.Execute();
+                }
+                else if (e.Control && e.KeyCode == Keys.U) // ungroup
+                {
+                    command = new UngroupingCommand(this);
+                    command.Execute();
+                }
+                else if (e.Control && e.KeyCode == Keys.N) // next
+                {
+                    command = new MoveNextCommand(this);
+                    command.Execute();
+                }
+                else if (e.Control && e.KeyCode == Keys.P) // prev
+                {
+                    command = new MovePrevCommand(this);
+                    command.Execute();
+                }
+                else if (e.Control && e.KeyCode == Keys.L) //last
+                {
+                    command = new MoveLastCommand(this);
+                    command.Execute();
+                }
+                else if (e.Control && e.KeyCode == Keys.F) // first
+                {
+                    command = new MoveFirstCommand(this);
+                    command.Execute();
+                }
+                else if (e.Control && e.KeyCode == Keys.H) // hide
+                {
+                    command = new HideCommand(this);
+                    command.Execute();
+                }
+                else if (e.Control && e.KeyCode == Keys.Z) // undo
+                {
+                    if (UndoStack.Count != 0)
+                    {
+                        command = UndoStack.Pop();
+                        command.Unexecute();
+                    }
+                }
+                else if (e.Control && e.KeyCode == Keys.Y) // redo
+                {
+                    if (RedoStack.Count != 0)
+                    {
+                        command = RedoStack.Pop();
+                        command.Reexecute();
+                    }
+                }
                 this.Repaint();
             }
         }
@@ -234,23 +288,22 @@ namespace DrawingToolkit
             return DrawingObjectList;
         }
 
-        public DrawingObject SelectObjectAt(Point e)
+        public void SelectObjectAt(Point e)
         {
             DrawingObject drawingObject = GetObjectAt(e);
             if (drawingObject != null)
             {
                 drawingObject.Select();
+                SelectedObjectList.Add(drawingObject);
             }
-            return drawingObject;
         }
 
-        public List<DrawingObject> SelectAllObject()
+        public void SelectAllObject()
         {
             foreach (DrawingObject obj in DrawingObjectList)
             {
                 obj.Select();
             }
-            return DrawingObjectList;
         }
 
         public void DeselectObjectAt(Point e)
@@ -259,6 +312,7 @@ namespace DrawingToolkit
             if (drawingObject != null)
             {
                 drawingObject.Deselect();
+                SelectedObjectList.Remove(drawingObject);
             }
         }
 
@@ -268,6 +322,7 @@ namespace DrawingToolkit
             {
                 drawingObject.Deselect();
             }
+            SelectedObjectList.Clear();
         }
 
         public void UpdateListIndex()
@@ -277,7 +332,23 @@ namespace DrawingToolkit
                 DrawingObjectList[i].Index = i;
             }
 
+            this.UpdateSelectedByIndex();
             this.RefreshTextBox();
+        }
+
+        public List<DrawingObject> GetSelectedObject()
+        {
+            return SelectedObjectList;
+        }
+
+        public void AddSelectedObject(DrawingObject drawingObject)
+        {
+            SelectedObjectList.Add(drawingObject);
+        }
+
+        public void UpdateSelectedByIndex()
+        {
+            SelectedObjectList = SelectedObjectList.OrderBy(o => o.Index).ToList();
         }
     }
 }

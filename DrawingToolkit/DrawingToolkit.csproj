@@ -90,6 +90,10 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="MoveFirstCommand.cs" />
+    <Compile Include="MoveLastCommand.cs" />
+    <Compile Include="MoveNextCommand.cs" />
+    <Compile Include="MovePrevCommand.cs" />
     <Compile Include="PreviewState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

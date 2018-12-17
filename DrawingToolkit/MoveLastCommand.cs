@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DrawingToolkit
 {
-    public class GroupingCommand : ICommand
+    public class MoveLastCommand : ICommand
     {
         public String Name { get; set; }
         public ICanvas TargetCanvas { get; set; }
@@ -14,30 +14,26 @@ namespace DrawingToolkit
         public List<DrawingObject> previousObjects { get; set; }
         public List<DrawingObject> executedObjects { get; set; }
 
-        public GroupingCommand()
+        public MoveLastCommand()
         {
-            this.Name = "Grouping Command";
+            this.Name = "Move to Last";
         }
 
-        public GroupingCommand(ICanvas canvas) : this()
+        public MoveLastCommand(ICanvas canvas) : this()
         {
-            this.TargetCanvas = canvas;
-            this.selectedObjects = TargetCanvas.GetSelectedObject();
-            this.previousObjects = new List<DrawingObject>(TargetCanvas.GetObjectList());
+            TargetCanvas = canvas;
+            selectedObjects = canvas.GetSelectedObject();
+            previousObjects = new List<DrawingObject>(canvas.GetObjectList());
         }
 
         public void Execute()
         {
-            DrawingObject Group = new GroupObject(selectedObjects);
-            TargetCanvas.AddDrawingObject(Group);
             TargetCanvas.RemoveObjectsFromList(selectedObjects);
-            selectedObjects.Clear();
-            selectedObjects.Add(Group);
+            TargetCanvas.AddObjectsToListBack(selectedObjects);
             TargetCanvas.UpdateListIndex();
-            this.executedObjects = new List<DrawingObject>(TargetCanvas.GetObjectList());
+            executedObjects = new List<DrawingObject>(TargetCanvas.GetObjectList());
             TargetCanvas.UndoStack.Push(this);
             TargetCanvas.RedoStack.Clear();
-
         }
 
         public void Unexecute()

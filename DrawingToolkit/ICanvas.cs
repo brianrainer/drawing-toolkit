@@ -30,8 +30,12 @@ namespace DrawingToolkit
         DrawingObject GetObjectAt(Point e);
         List<DrawingObject> GetObjectList();
 
-        DrawingObject SelectObjectAt(Point e);
-        List<DrawingObject> SelectAllObject();
+        void SelectObjectAt(Point e);
+        void SelectAllObject();
+
+        List<DrawingObject> GetSelectedObject();
+        void AddSelectedObject(DrawingObject drawingObject);
+        void UpdateSelectedByIndex();
 
         void DeselectObjectAt(Point e);
         void DeselectAllObject();
