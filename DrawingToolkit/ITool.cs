@@ -12,6 +12,7 @@ namespace DrawingToolkit
         String Name { get; set; }
         Cursor cursor { get; }
         ICanvas TargetCanvas { get; set; }
+        ICommand command { get; set; }
 
         void ToolMouseDown(object sender, MouseEventArgs e);
         void ToolMouseUp(object sender, MouseEventArgs e);

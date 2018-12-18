@@ -35,6 +35,7 @@ namespace DrawingToolkit
 
         List<DrawingObject> GetSelectedObject();
         void AddSelectedObject(DrawingObject drawingObject);
+        void RemoveSelectedObject(DrawingObject drawingObject);
         void UpdateSelectedByIndex();
 
         void DeselectObjectAt(Point e);

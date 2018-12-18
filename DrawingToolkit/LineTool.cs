@@ -22,7 +22,7 @@ namespace DrawingToolkit
         }
 
         public Cursor cursor => Cursors.Arrow;
-
+        public ICommand command { get; set; }
         public ICanvas TargetCanvas { get => GetCanvas(); set => this.SetCanvas(value); }
 
         private ICanvas GetCanvas()
@@ -47,9 +47,10 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                GetCanvas().RemoveDrawingObject(lineSegment);
-                lineSegment = new LineSegment(lineSegment.StartPoint, new Point(e.X, e.Y));
-                GetCanvas().AddDrawingObject(lineSegment);
+                canvas.RemoveDrawingObject(lineSegment);
+                Point endPoint = new Point(e.X, e.Y);
+                lineSegment = new LineSegment(lineSegment.StartPoint, endPoint);
+                canvas.AddDrawingObject(lineSegment);
             }
         }
 
@@ -57,11 +58,16 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                GetCanvas().RemoveDrawingObject(lineSegment);
-                lineSegment = new LineSegment(lineSegment.StartPoint, new Point(e.X, e.Y));
-                GetCanvas().AddDrawingObject(lineSegment);
-                GetCanvas().DeselectAllObject();
-                lineSegment.Select();
+                Point endPoint = new Point(e.X, e.Y);
+                canvas.RemoveDrawingObject(lineSegment);
+
+                if (Math.Abs(lineSegment.StartPoint.X - endPoint.X) > lineSegment.GetEpsilon() || 
+                    Math.Abs(lineSegment.StartPoint.Y - endPoint.Y) > lineSegment.GetEpsilon())
+                {
+                    lineSegment = new LineSegment(lineSegment.StartPoint, endPoint);
+                    command = new DrawCommand(canvas, lineSegment);
+                    command.Execute();
+                }
             }
         }
 

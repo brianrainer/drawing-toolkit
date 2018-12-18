@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,8 +22,8 @@ namespace DrawingToolkit
         }
 
         public Cursor cursor => Cursors.Arrow;
-
         public ICanvas TargetCanvas { get => GetCanvas(); set => this.SetCanvas(value); }
+        public ICommand command { get; set; }
 
         private ICanvas GetCanvas()
         {
@@ -46,9 +47,11 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                GetCanvas().RemoveDrawingObject(rectangle);
-                rectangle = new Rectangle(rectangle.StartPoint, new System.Drawing.Point(e.X, e.Y));
-                GetCanvas().AddDrawingObject(rectangle);
+                canvas.RemoveDrawingObject(rectangle);
+                Point EndPoint = new Point(e.X, e.Y);
+                rectangle = new Rectangle(rectangle.StartPoint, EndPoint);
+                canvas.AddDrawingObject(rectangle);
+                canvas.UpdateListIndex();
             }
         }
 
@@ -56,11 +59,17 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                GetCanvas().RemoveDrawingObject(rectangle);
-                rectangle = new Rectangle(rectangle.StartPoint, new System.Drawing.Point(e.X, e.Y));
-                GetCanvas().AddDrawingObject(rectangle);
-                GetCanvas().DeselectAllObject();
-                rectangle.Select();
+                Point EndPoint = new Point(e.X, e.Y);
+                canvas.RemoveDrawingObject(rectangle);
+                canvas.UpdateListIndex();
+
+                if (Math.Abs(rectangle.StartPoint.X - EndPoint.X) > rectangle.GetEpsilon() || 
+                    Math.Abs(rectangle.StartPoint.Y - EndPoint.Y) > rectangle.GetEpsilon() )
+                {
+                    rectangle = new Rectangle(rectangle.StartPoint, EndPoint);
+                    command = new DrawCommand(canvas, rectangle);
+                    command.Execute();
+                }
             }
         }
 

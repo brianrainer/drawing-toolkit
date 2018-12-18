@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,8 +22,8 @@ namespace DrawingToolkit
         }
 
         public Cursor cursor => Cursors.Arrow;
-
         public ICanvas TargetCanvas { get => GetCanvas(); set => this.SetCanvas(value); }
+        public ICommand command { get; set; }
 
         private ICanvas GetCanvas()
         {
@@ -46,9 +47,11 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                GetCanvas().RemoveDrawingObject(ellipse);
-                ellipse = new Circle(ellipse.CenterPoint, new System.Drawing.Point(e.X, e.Y));
-                GetCanvas().AddDrawingObject(ellipse);
+                canvas.RemoveDrawingObject(ellipse);
+                Point EndPoint = new Point(e.X, e.Y);
+                ellipse = new Circle(ellipse.CenterPoint, EndPoint);
+                canvas.AddDrawingObject(ellipse);
+                canvas.UpdateListIndex();
             }
         }
 
@@ -56,11 +59,16 @@ namespace DrawingToolkit
         {
             if (e.Button == MouseButtons.Left)
             {
-                GetCanvas().RemoveDrawingObject(ellipse);
-                ellipse = new Circle(ellipse.CenterPoint, new System.Drawing.Point(e.X, e.Y));
-                GetCanvas().AddDrawingObject(ellipse);
-                GetCanvas().DeselectAllObject();
-                ellipse.Select();
+                Point EndPoint = new Point(e.X, e.Y);
+                canvas.RemoveDrawingObject(ellipse);
+
+                if (Math.Abs(ellipse.CenterPoint.X - EndPoint.X) > ellipse.GetEpsilon() 
+                    || Math.Abs(ellipse.CenterPoint.Y - EndPoint.Y) > ellipse.GetEpsilon())
+                {
+                    ellipse = new Circle(ellipse.CenterPoint, EndPoint);
+                    command = new DrawCommand(canvas, ellipse);
+                    command.Execute();
+                }
             }
         }
 

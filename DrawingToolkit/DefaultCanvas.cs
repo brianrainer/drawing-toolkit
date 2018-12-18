@@ -118,7 +118,25 @@ namespace DrawingToolkit
 
         private void DefaultCanvas_KeyDown(object sender, KeyEventArgs e)
         {
-            if (SelectedObjectList.Count != 0)
+            if (e.Control && e.KeyCode == Keys.Z) // undo
+            {
+                if (UndoStack.Count != 0)
+                {
+                    command = UndoStack.Pop();
+                    Debug.WriteLine(command.Name);
+                    command.Unexecute();
+                }
+            }
+            else if (e.Control && e.KeyCode == Keys.Y) // redo
+            {
+                if (RedoStack.Count != 0)
+                {
+                    command = RedoStack.Pop();
+                    Debug.WriteLine(command.Name);
+                    command.Reexecute();
+                }
+            }
+            else if (SelectedObjectList.Count != 0)
             {
                 if (e.Control && e.KeyCode == Keys.G) // group
                 {
@@ -155,24 +173,8 @@ namespace DrawingToolkit
                     command = new HideCommand(this);
                     command.Execute();
                 }
-                else if (e.Control && e.KeyCode == Keys.Z) // undo
-                {
-                    if (UndoStack.Count != 0)
-                    {
-                        command = UndoStack.Pop();
-                        command.Unexecute();
-                    }
-                }
-                else if (e.Control && e.KeyCode == Keys.Y) // redo
-                {
-                    if (RedoStack.Count != 0)
-                    {
-                        command = RedoStack.Pop();
-                        command.Reexecute();
-                    }
-                }
-                this.Repaint();
             }
+            this.Repaint();
         }
 
         private void DefaultCanvas_KeyUp(object sender, KeyEventArgs e)
@@ -344,6 +346,11 @@ namespace DrawingToolkit
         public void AddSelectedObject(DrawingObject drawingObject)
         {
             SelectedObjectList.Add(drawingObject);
+        }
+
+        public void RemoveSelectedObject(DrawingObject drawingObject)
+        {
+            SelectedObjectList.Remove(drawingObject);
         }
 
         public void UpdateSelectedByIndex()

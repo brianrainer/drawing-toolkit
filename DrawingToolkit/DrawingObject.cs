@@ -52,6 +52,11 @@ namespace DrawingToolkit
             return IsRendered;
         }
 
+        public virtual double GetEpsilon()
+        {
+            return EPSILON;
+        }
+
         public virtual void SetPen(Color color, float width, DashStyle dashStyle)
         {
             P = new Pen(color, width)

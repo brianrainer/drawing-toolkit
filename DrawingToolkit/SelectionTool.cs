@@ -24,7 +24,7 @@ namespace DrawingToolkit
         }
 
         public Cursor cursor => Cursors.Arrow;
-
+        public ICommand command { get; set; }
         public ICanvas TargetCanvas { get => GetCanvas(); set => SetCanvas(value); }
 
         private ICanvas GetCanvas()

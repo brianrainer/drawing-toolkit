@@ -60,6 +60,7 @@
     <Compile Include="DefaultToolbox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DrawCommand.cs" />
     <Compile Include="DrawingObject.cs" />
     <Compile Include="DrawingState.cs" />
     <Compile Include="EditState.cs" />

@@ -23,7 +23,7 @@ namespace DrawingToolkit
         }
 
         public Cursor cursor => Cursors.Arrow;
-
+        public ICommand command { get; set; }
         public ICanvas TargetCanvas { get => GetCanvas(); set => this.SetCanvas(value); }
 
         private ICanvas GetCanvas()
@@ -101,9 +101,8 @@ namespace DrawingToolkit
                     connectorSegment.AddObserver(StartObject, connectorSegment.StartPoint);
                     connectorSegment.AddObserver(EndObject, contactPoint);
 
-                    GetCanvas().AddDrawingObject(connectorSegment);
-                    connectorSegment.Select();
-                    GetCanvas().DeselectAllObject();
+                    command = new DrawCommand(canvas, connectorSegment);
+                    command.Execute();
                 }
                 connectorSegment = null;
                 StartObject = null;
