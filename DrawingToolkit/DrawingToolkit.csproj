@@ -70,6 +70,9 @@
     <Compile Include="ExampleToolbarItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="FirstTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GroupingCommand.cs" />
     <Compile Include="GroupObject.cs" />
     <Compile Include="HideCommand.cs" />
@@ -81,6 +84,9 @@
     <Compile Include="IToolbar.cs" />
     <Compile Include="IToolbarItem.cs" />
     <Compile Include="IToolbox.cs" />
+    <Compile Include="LastTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="LineSegment.cs" />
     <Compile Include="LineTool.cs">
       <SubType>Component</SubType>
@@ -95,17 +101,31 @@
     <Compile Include="MoveLastCommand.cs" />
     <Compile Include="MoveNextCommand.cs" />
     <Compile Include="MovePrevCommand.cs" />
+    <Compile Include="NextTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PreviewState.cs" />
+    <Compile Include="PrevTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="RectangleTool.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="RedoCommand.cs" />
+    <Compile Include="RedoTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SelectionTool.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="StaticState.cs" />
+    <Compile Include="UndoCommand.cs" />
+    <Compile Include="UndoTool.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UngroupingCommand.cs" />
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>

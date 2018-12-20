@@ -34,12 +34,17 @@ namespace DrawingToolkit
             this.toolbox.AddTool(new SelectionTool());
             this.toolbox.AddSeparator();
             this.toolbox.AddTool(new LineTool());
-            this.toolbox.AddSeparator();
             this.toolbox.AddTool(new RectangleTool());
-            this.toolbox.AddSeparator();
             this.toolbox.AddTool(new CircleTool());
-            this.toolbox.AddSeparator();
             this.toolbox.AddTool(new ConnectorTool());
+            this.toolbox.AddSeparator();
+            this.toolbox.AddTool(new PrevTool(canvas));
+            this.toolbox.AddTool(new NextTool(canvas));
+            this.toolbox.AddTool(new FirstTool(canvas));
+            this.toolbox.AddTool(new LastTool(canvas));
+            this.toolbox.AddSeparator();
+            this.toolbox.AddTool(new UndoTool(canvas));
+            this.toolbox.AddTool(new RedoTool(canvas));
             this.toolbox.ToolSelected += toolBox_ToolSelected;
             #endregion
 

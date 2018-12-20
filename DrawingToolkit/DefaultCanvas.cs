@@ -120,59 +120,55 @@ namespace DrawingToolkit
         {
             if (e.Control && e.KeyCode == Keys.Z) // undo
             {
-                if (UndoStack.Count != 0)
-                {
-                    command = UndoStack.Pop();
-                    Debug.WriteLine(command.Name);
-                    command.Unexecute();
-                }
+                command = new UndoCommand(this);
             }
             else if (e.Control && e.KeyCode == Keys.Y) // redo
             {
-                if (RedoStack.Count != 0)
-                {
-                    command = RedoStack.Pop();
-                    Debug.WriteLine(command.Name);
-                    command.Reexecute();
-                }
+                command = new RedoCommand(this);
             }
             else if (SelectedObjectList.Count != 0)
             {
                 if (e.Control && e.KeyCode == Keys.G) // group
                 {
                     command = new GroupingCommand(this);
-                    command.Execute();
                 }
                 else if (e.Control && e.KeyCode == Keys.U) // ungroup
                 {
                     command = new UngroupingCommand(this);
-                    command.Execute();
                 }
                 else if (e.Control && e.KeyCode == Keys.N) // next
                 {
                     command = new MoveNextCommand(this);
-                    command.Execute();
                 }
                 else if (e.Control && e.KeyCode == Keys.P) // prev
                 {
                     command = new MovePrevCommand(this);
-                    command.Execute();
                 }
                 else if (e.Control && e.KeyCode == Keys.L) //last
                 {
                     command = new MoveLastCommand(this);
-                    command.Execute();
                 }
                 else if (e.Control && e.KeyCode == Keys.F) // first
                 {
                     command = new MoveFirstCommand(this);
-                    command.Execute();
                 }
                 else if (e.Control && e.KeyCode == Keys.H) // hide
                 {
                     command = new HideCommand(this);
-                    command.Execute();
                 }
+                else
+                {
+                    command = null;
+                }
+            }
+            else
+            {
+                command = null;
+            }
+
+            if (command != null)
+            {
+                command.Execute();
             }
             this.Repaint();
         }

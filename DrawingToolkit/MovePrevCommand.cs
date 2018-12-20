@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace DrawingToolkit
         public MovePrevCommand()
         {
             this.Name = "Move Prev";
+            Debug.WriteLine(Name);
         }
 
         public MovePrevCommand(ICanvas canvas): this()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace DrawingToolkit
         public HideCommand()
         {
             this.Name = "Hide Command";
+            Debug.WriteLine(Name);
         }
 
         public HideCommand(ICanvas canvas) : this()

@@ -20,6 +20,7 @@ namespace DrawingToolkit
         public DrawCommand()
         {
             this.Name = "Draw Command";
+            Debug.WriteLine(Name);
         }
 
         public DrawCommand(ICanvas canvas) : this()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace DrawingToolkit
         public UngroupingCommand()
         {
             this.Name = "Ungrouping Command";
+            Debug.WriteLine(Name);
         }
 
         public UngroupingCommand(ICanvas canvas) : this()

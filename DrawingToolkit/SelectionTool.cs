@@ -21,6 +21,7 @@ namespace DrawingToolkit
             this.ToolTipText = "Selection Tool";
             this.Text = "Select";
             this.CheckOnClick = true;
+            Debug.WriteLine(Name);
         }
 
         public Cursor cursor => Cursors.Arrow;

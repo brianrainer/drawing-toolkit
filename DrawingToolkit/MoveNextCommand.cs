@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace DrawingToolkit
         public MoveNextCommand()
         {
             this.Name = "Move Next";
+            Debug.WriteLine(Name);
         }
 
         public MoveNextCommand(ICanvas canvas): this()
